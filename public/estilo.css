@@ -1,0 +1,40 @@
+body{
+	font-family: arial, helvetica;
+	background: #381451;
+}
+
+.menu{
+	list-style: none;
+	padding: 0;
+	background: #381451;
+	width: 90%;
+	max-width: 1000px;
+	margin: auto;
+}
+
+.menu li a{
+	text-decoration: none;
+	color: #c1a6db;
+	padding: 20px;
+	display: block;
+}
+
+.menu li{
+	display: inline-block;
+	text-align: center;
+}
+
+.menu li a:hover{
+	background: #f7f6f8;
+}
+.waves {
+	background-image: url('PROYECTO/assets/wave.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+  
+
