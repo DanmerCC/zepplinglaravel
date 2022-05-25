@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Process extends Model
 {
     use HasFactory;
+
+    protected  $fillable = [
+        'status',
+        'out_descompress'
+    ];
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('processes', function (Blueprint $table) {
             $table->id();
-            $table->enum('status',['STARTED','FAIL','ENDED']);
+            $table->enum('status',['STARTED','FAIL','ENDED'])->default('STARTED');
             $table->text('out_descompress')->nullable();
             $table->timestamps();
         });

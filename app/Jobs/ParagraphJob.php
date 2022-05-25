@@ -13,14 +13,17 @@ class ParagraphJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $fecha;
+    private $process;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($fecha,$process)
     {
-        //
+        $this->fecha  = $fecha;
+        $this->process  = $process;
     }
 
     /**
@@ -30,6 +33,16 @@ class ParagraphJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
+        $result = $obj->paragraph()->runParagraphSync('2H5MVKKF1',env(),[
+                "params"=>[
+                    "date"=>"lograste!!"
+                ]
+        ]);
+
+        $this->process->out_descompress = json_encode($result);
+        $this->process->status = 'ENDED';
+        $this->process->save();
+
     }
 }
