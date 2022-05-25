@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ParagraphController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,10 @@ Route::get('/', function () {
     return view('wombase');
 });
 
+
+Route::post('descomprimir',[ParagraphController::class,'descomprimir']);
 Route::get('/zepplingtst', function () {
-    $obj = new ZeppelinAPI\Zeppelin(['baseUrl' => "localhost:8080"]);
+    /*$obj = new ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
     $result = $obj->paragraph()->runParagraphSync('2H5MVKKF1','20220522-173128_2133226449',[
             "params"=>[
                 "date"=>"lograste!!"
@@ -26,7 +29,7 @@ Route::get('/zepplingtst', function () {
     ]);
     //dd($result);
     //dd($result);
-    dd(explode("\n",$result->body->msg[0]->data));
+    dd(explode("\n",$result->body->msg[0]->data));*/
     return view('welcome');
 });
 

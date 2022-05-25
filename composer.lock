@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ff9bcd8a5fa0a3ce3fac2017f0df0a7",
+    "content-hash": "02db396ac6e013e76bf654d2799f8a52",
     "packages": [
         {
             "name": "brick/math",
@@ -71,8 +71,14 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "C:\\Users\\hp\\Desktop\\ProyectosCAEN-EPG\\zeppelinphp-master",
-                "reference": "93ad37ec5b75a82878523e6e93e313cc9864e3bd"
+                "url": "https://github.com/DanmerCC/zeppelinphp.git",
+                "reference": "19d7ebc358f136408545ee2f537b1196bc87f1a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DanmerCC/zeppelinphp/zipball/19d7ebc358f136408545ee2f537b1196bc87f1a8",
+                "reference": "19d7ebc358f136408545ee2f537b1196bc87f1a8",
+                "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "7.4.2",
@@ -95,10 +101,17 @@
                 {
                     "name": "Darshan Sanandiya",
                     "email": "darshan.sanandiya@qdata.io"
+                },
+                {
+                    "name": "Danmer Ccosco",
+                    "email": "danmerccoscco@gmail.com"
                 }
             ],
             "description": "Zeppelin PHP Library",
-            "time": "2022-05-18T22:35:27+00:00"
+            "support": {
+                "source": "https://github.com/DanmerCC/zeppelinphp/tree/master"
+            },
+            "time": "2022-05-18T23:46:55+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

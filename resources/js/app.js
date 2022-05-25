@@ -3,6 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import { DataTable, Paginate, ModalComponent,Increaser,PreviewFile,CheckableItem,GroupCheckBox,DropDown,DropDownItem } from "@danmerccoscco/personal";
 
 require('./bootstrap');
 
@@ -16,10 +17,19 @@ window.Vue = require('vue').default;
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component("data-table", DataTable);
+Vue.component("check-box", CheckableItem);
+Vue.component("paginator", Paginate);
+Vue.component("increaser", Increaser);
+Vue.component("modal-component", ModalComponent);
+Vue.component("PreviewFile", PreviewFile);
+Vue.component("group-checkbox", GroupCheckBox);
+Vue.component("drop-down", DropDown);
+Vue.component("drop-down-item", DropDownItem);
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
