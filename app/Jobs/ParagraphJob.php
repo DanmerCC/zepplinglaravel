@@ -34,7 +34,7 @@ class ParagraphJob implements ShouldQueue
     public function handle()
     {
         $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
-        $result = $obj->paragraph()->runParagraphSync('2H5MVKKF1',env(),[
+        $result = $obj->paragraph()->runParagraphSync(env('ZEPLLING_BOOK1_ID'),env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'),[
                 "params"=>[
                     "date"=>"lograste!!"
                 ]
