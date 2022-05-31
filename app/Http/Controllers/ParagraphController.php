@@ -19,4 +19,8 @@ class ParagraphController extends Controller
 
         return "trabajo agregado";
     }
+
+    function process(){
+        return Process::query()->orderBy('id', 'DESC')->get();
+    }
 }

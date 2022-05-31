@@ -24,7 +24,7 @@ class DescromprimirRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha'=>'date_format:Y-m-d'
+            'fecha'=>'date_format:Y_m_d'
         ];
     }
 }

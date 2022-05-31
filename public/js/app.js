@@ -8183,26 +8183,91 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       new_process_date: null,
       newModal: false,
       columns: [{
-        name: '',
-        value: ''
+        name: "Estado",
+        value: "status"
+      }, {
+        name: "salida",
+        value: "out_descompress"
+      }, {
+        name: "Mostrar data",
+        value: "mostrar_data"
       }],
-      items: []
+      process: [],
+      worker: null
     };
   },
   methods: {
-    iniciarDescompresion: function iniciarDescompresion() {
+    loadProcess: function loadProcess() {
+      var _this = this;
+
       var data = {};
-      axios.post("/descomprimir", data).then(function (response) {
-        console.log(response);
+      axios.get("/process", data).then(function (response) {
+        _this.process = response.data;
       })["catch"](function (error) {
         return console.error(error);
       });
+    },
+    iniciarDescompresion: function iniciarDescompresion() {
+      var _this2 = this;
+
+      var data = {
+        fecha: this.dateFormated
+      };
+      axios.post("/descomprimir", data).then(function (response) {
+        _this2.newModal = false;
+
+        _this2.loadProcess();
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadProcess();
+    this.worker = setInterval(this.loadProcess, 60000);
+  },
+  computed: {
+    dateFormated: function dateFormated() {
+      if (!this.new_process_date) return null;
+      return this.new_process_date.replaceAll("-", "_");
     }
   }
 });
@@ -30977,7 +31042,60 @@ var render = function () {
         { staticClass: "row" },
         [
           _c("data-table", {
-            attrs: { columns: _vm.columns, items: _vm.items },
+            attrs: { columns: _vm.columns, items: _vm.process },
+            scopedSlots: _vm._u([
+              {
+                key: "status",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    item == "STARTED"
+                      ? _c("div", [_vm._v("Iniciado")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    item == "FALLO"
+                      ? _c("div", [_vm._v("TERMINADO")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    item == "ENDED" ? _c("div", [_vm._v("FALLO")]) : _vm._e(),
+                  ]
+                },
+              },
+              {
+                key: "out_descompress",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    _c("textarea", {
+                      attrs: {
+                        disabled: true,
+                        name: "",
+                        id: "",
+                        cols: "80",
+                        rows: "5",
+                      },
+                      domProps: { value: item },
+                    }),
+                  ]
+                },
+              },
+              {
+                key: "mostrar_data",
+                fn: function (ref) {
+                  var item = ref.item
+                  var row = ref.row
+                  return [
+                    row.status == "ENDED"
+                      ? _c("div", { staticClass: "container" }, [
+                          _c("button", { staticClass: "btn btn-primary" }, [
+                            _vm._v("Visualizar"),
+                          ]),
+                        ])
+                      : _c("div"),
+                  ]
+                },
+              },
+            ]),
           }),
         ],
         1
@@ -31041,13 +31159,14 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-primary",
+                          attrs: { disabled: !_vm.dateFormated },
                           on: {
                             click: function ($event) {
                               return _vm.iniciarDescompresion()
                             },
                           },
                         },
-                        [_vm._v("\n                Iniciar\n            ")]
+                        [_vm._v("\n        Iniciar\n      ")]
                       ),
                     ]
                   },
@@ -31056,7 +31175,7 @@ var render = function () {
               ],
               null,
               false,
-              493244102
+              4083486155
             ),
           })
         : _vm._e(),
