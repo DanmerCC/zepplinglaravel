@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class DescromprimirJob implements ShouldQueue
 {
@@ -33,6 +34,7 @@ class DescromprimirJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::infO("Iniciando proceso de descompresion ".env('ZEPLLING_HOST'));
         $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' =>env('ZEPLLING_HOST')]);
 
         $parag = new PharagraphResult();
@@ -49,7 +51,7 @@ class DescromprimirJob implements ShouldQueue
         $parag->status = 'ENDED';
         $parag->result = $result;
         $parag->save();
-
+        Log::infO("Terminando proceso de descompresion");
 
     }
 }
