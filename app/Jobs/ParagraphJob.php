@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ParagraphJob implements ShouldQueue
 {
@@ -35,18 +36,21 @@ class ParagraphJob implements ShouldQueue
     public function handle()
     {
         try {
+
+            Log::infO("Iniciando proceso de descompresion ".env('ZEPLLING_HOST'));
             $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
             $result = $obj->paragraph()->runParagraphSync(str_replace('paragraph_','',env('ZEPLLING_BOOK1_ID')),env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'),[
                     "params"=>[
-                        "date"=>$this->fecha
+                        "fecha"=>$this->fecha
                     ]
             ]);
-
+            Log::info("url desconocida");
+            Log::info((array) ($result));
             $this->process->out_descompress = json_encode($result);
             $this->process->status = 'ENDED';
             $this->process->save();
         } catch (\Throwable $th) {
-            $this->process->out_descompress = json_encode($th->getMessage());
+            $this->process->out_descompress = $th->getMessage();
             $this->process->status = 'FAIL';
             $this->process->save();
         }

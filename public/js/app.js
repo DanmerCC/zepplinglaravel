@@ -8215,6 +8215,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8262,7 +8263,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.loadProcess();
-    this.worker = setInterval(this.loadProcess, 60000);
+    this.worker = setInterval(this.loadProcess, 4000);
   },
   computed: {
     dateFormated: function dateFormated() {
@@ -31064,8 +31065,18 @@ var render = function () {
               {
                 key: "out_descompress",
                 fn: function (ref) {
+                  var row = ref.row
                   var item = ref.item
                   return [
+                    _c("input", {
+                      staticStyle: { width: "400px" },
+                      attrs: {
+                        width: "100%",
+                        type: "text",
+                        placeholder: row.out_casted,
+                      },
+                    }),
+                    _vm._v(" "),
                     _c("textarea", {
                       attrs: {
                         disabled: true,

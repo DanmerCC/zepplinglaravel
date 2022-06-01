@@ -49,7 +49,8 @@ class DescromprimirJob implements ShouldQueue
         ]);
 
         $parag->status = 'ENDED';
-        $parag->result = $result;
+        $parag->result = base64_encode($result);
+        Log::infO(base64_encode($result));
         $parag->save();
         Log::infO("Terminando proceso de descompresion");
 

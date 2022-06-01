@@ -10,7 +10,8 @@
           <div v-if="item == 'FALLO'">TERMINADO</div>
           <div v-if="item == 'ENDED'">FALLO</div>
         </template>
-        <template #out_descompress="{ item }">
+        <template #out_descompress="{row, item }">
+        <input width="100%" style="width:400px" type="text" :placeholder="row.out_casted">
           <textarea :disabled="true" :value="item" name="" id="" cols="80" rows="5"></textarea>
         </template>
         <template #mostrar_data="{ item ,row}">
@@ -94,7 +95,7 @@ export default {
   },
   mounted() {
     this.loadProcess();
-    this.worker = setInterval(this.loadProcess, 60000);
+    this.worker = setInterval(this.loadProcess, 4000);
   },
   computed: {
     dateFormated() {

@@ -34,6 +34,17 @@ Route::get('/zepplingtst', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    $obj = new ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
+    $result = $obj->paragraph()->runParagraphSync('2H3HB7613','paragraph_1654041145659_1836033409',[
+            "params"=>[
+                "fecha"=>"lograste!!"
+            ]
+    ]);
+    dd($result);
+    return view('welcome');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
