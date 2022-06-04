@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Process;
+use App\ResponseZeppelin;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,15 +45,20 @@ class ParagraphJob implements ShouldQueue
                         "fecha"=>$this->fecha
                     ]
             ]);
-            Log::info("url desconocida");
+            Log::info("Resultado de api:");
             Log::info((array) ($result));
+            Log::info(ResponseZeppelin::validResponse((array)$result));
+            Log::info(ResponseZeppelin::getDataResponse((array)$result));
+
             $this->process->out_descompress = json_encode($result);
             $this->process->status = 'ENDED';
             $this->process->save();
         } catch (\Throwable $th) {
+            Log::info("error al ejecutar paragrafo");
             $this->process->out_descompress = $th->getMessage();
             $this->process->status = 'FAIL';
             $this->process->save();
+            report($th);
         }
 
     }

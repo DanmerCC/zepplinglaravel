@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@danmerccoscco/personal": "^2.5.40"
+        "@danmerccoscco/personal": "^2.5.40",
+        "autoprefixer": "10.4.5"
     }
 }

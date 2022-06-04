@@ -8216,52 +8216,139 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       new_process_date: null,
       newModal: false,
       columns: [{
-        name: "Estado",
-        value: "status"
+        name: "Descompresion",
+        value: "descompresion"
       }, {
-        name: "salida",
-        value: "out_descompress"
-      }, {
-        name: "Mostrar data",
-        value: "mostrar_data"
-      }],
+        name: "Parrafo 2",
+        value: "parrafo2"
+      }
+      /*
+      { name: "Parrafo 3", value: "parrafo3" },
+      { name: "Parrafo 4", value: "parrafo4" },
+      { name: "Parrafo 5", value: "parrafo5" },
+      { name: "Parrafo 6", value: "parrafo6" },
+      { name: "Parrafo 7", value: "parrafo7" },
+      { name: "Parrafo 8", value: "parrafo8" },
+      { name: "Parrafo 9", value: "parrafo9" },
+      { name: "Parrafo 10", value: "parrafo10" },
+      { name: "Parrafo 11", value: "parrafo11" },
+      { name: "Parrafo 12", value: "parrafo12" },*/
+      ],
       process: [],
-      worker: null
+      worker: null,
+      parrafos: [],
+      modalParrafo: null,
+      resultadoParagrafoStandar: ''
     };
   },
   methods: {
-    loadProcess: function loadProcess() {
+    viewParrafoResult: function viewParrafoResult(parrafo, params) {
       var _this = this;
 
       var data = {};
+      console.log(params);
+      axios.post("/pararafosSinParametro/".concat(parrafo.id), data).then(function (response) {
+        console.log(response);
+        _this.resultadoParagrafoStandar = response.data.body.msg.map(function (x) {
+          return x.data;
+        });
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    showModal: function showModal(parrafo) {
+      this.modalParrafo = parrafo;
+    },
+    parrafo2: function parrafo2() {
+      var _this2 = this;
+
+      var data = {};
+      axios.post("/parrafo2", data).then(function (response) {
+        _this2.loadProcess();
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    getParrafos: function getParrafos() {
+      var _this3 = this;
+
+      var data = {};
+      axios.get("/paragraphs", data).then(function (response) {
+        _this3.parrafos = response.data;
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    loadProcess: function loadProcess() {
+      var _this4 = this;
+
+      var data = {};
       axios.get("/process", data).then(function (response) {
-        _this.process = response.data;
+        _this4.process = response.data;
       })["catch"](function (error) {
         return console.error(error);
       });
     },
     iniciarDescompresion: function iniciarDescompresion() {
-      var _this2 = this;
+      var _this5 = this;
 
       var data = {
         fecha: this.dateFormated
       };
       axios.post("/descomprimir", data).then(function (response) {
-        _this2.newModal = false;
+        _this5.newModal = false;
 
-        _this2.loadProcess();
+        _this5.loadProcess();
       })["catch"](function (error) {
         return console.error(error);
       });
     }
   },
   mounted: function mounted() {
+    this.getParrafos();
     this.loadProcess();
     this.worker = setInterval(this.loadProcess, 4000);
   },
@@ -31046,49 +31133,65 @@ var render = function () {
             attrs: { columns: _vm.columns, items: _vm.process },
             scopedSlots: _vm._u([
               {
-                key: "status",
+                key: "descompresion",
                 fn: function (ref) {
-                  var item = ref.item
+                  var row = ref.row
                   return [
-                    item == "STARTED"
-                      ? _c("div", [_vm._v("Iniciado")])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    item == "FALLO"
-                      ? _c("div", [_vm._v("TERMINADO")])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    item == "ENDED" ? _c("div", [_vm._v("FALLO")]) : _vm._e(),
+                    row.status == "STARTED"
+                      ? _c("div", [
+                          _c("button", { staticClass: "btn btn-secundary" }, [
+                            _vm._v("\n              ...CARGANDO\n          "),
+                          ]),
+                        ])
+                      : _c("div", [
+                          row.status == "FALLO"
+                            ? _c("div", [_vm._v("FALLADO")])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          row.status == "ENDED"
+                            ? _c("div", [_vm._v("TERMINADO")])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            attrs: {
+                              disabled: true,
+                              name: "",
+                              id: "",
+                              cols: "60",
+                              rows: "5",
+                            },
+                            domProps: { value: row.out_descompress },
+                          }),
+                        ]),
                   ]
                 },
               },
               {
-                key: "out_descompress",
-                fn: function (ref) {
-                  var row = ref.row
-                  var item = ref.item
-                  return [
-                    _c("input", {
-                      staticStyle: { width: "400px" },
-                      attrs: {
-                        width: "100%",
-                        type: "text",
-                        placeholder: row.out_casted,
+                key: "parrafo2",
+                fn: function () {
+                  return _vm._l(_vm.parrafos, function (parrafo, index) {
+                    return _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function ($event) {
+                            return _vm.showModal(parrafo)
+                          },
+                        },
                       },
-                    }),
-                    _vm._v(" "),
-                    _c("textarea", {
-                      attrs: {
-                        disabled: true,
-                        name: "",
-                        id: "",
-                        cols: "80",
-                        rows: "5",
-                      },
-                      domProps: { value: item },
-                    }),
-                  ]
+                      [
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              parrafo.title ? parrafo.title : "Parrafo " + index
+                            )
+                        ),
+                      ]
+                    )
+                  })
                 },
+                proxy: true,
               },
               {
                 key: "mostrar_data",
@@ -31187,6 +31290,134 @@ var render = function () {
               null,
               false,
               4083486155
+            ),
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.modalParrafo != null
+        ? _c("modal-component", {
+            attrs: { title: _vm.modalParrafo.title },
+            on: {
+              close: function ($event) {
+                _vm.modalParrafo = null
+              },
+            },
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "body",
+                  fn: function () {
+                    return [
+                      _vm._l(
+                        _vm.modalParrafo.settings.params,
+                        function (param, index) {
+                          return _c("div", [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(index) +
+                                  "\n              "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.modalParrafo.settings.params[index],
+                                  expression:
+                                    "modalParrafo.settings.params[index]",
+                                },
+                              ],
+                              attrs: { type: "text" },
+                              domProps: {
+                                value: _vm.modalParrafo.settings.params[index],
+                              },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.modalParrafo.settings.params,
+                                    index,
+                                    $event.target.value
+                                  )
+                                },
+                              },
+                            }),
+                          ])
+                        }
+                      ),
+                      _vm._v(" "),
+                      _vm.resultadoParagrafoStandar != "" &&
+                      _vm.resultadoParagrafoStandar != null
+                        ? _c("div", { staticClass: "container" }, [
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.resultadoParagrafoStandar,
+                                  expression: "resultadoParagrafoStandar",
+                                },
+                              ],
+                              attrs: {
+                                readonly: "",
+                                disabled: false,
+                                cols: "60",
+                                rows: "5",
+                              },
+                              domProps: {
+                                value: _vm.resultadoParagrafoStandar,
+                              },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.resultadoParagrafoStandar =
+                                    $event.target.value
+                                },
+                              },
+                            }),
+                          ])
+                        : _vm._e(),
+                    ]
+                  },
+                  proxy: true,
+                },
+                {
+                  key: "footer",
+                  fn: function () {
+                    return [
+                      _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            on: {
+                              click: function ($event) {
+                                return _vm.viewParrafoResult(
+                                  _vm.modalParrafo,
+                                  _vm.modalParrafo.settings.params
+                                )
+                              },
+                            },
+                          },
+                          [_vm._v("Enviar")]
+                        ),
+                      ]),
+                    ]
+                  },
+                  proxy: true,
+                },
+              ],
+              null,
+              false,
+              1129415821
             ),
           })
         : _vm._e(),

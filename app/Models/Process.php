@@ -18,6 +18,10 @@ class Process extends Model
     protected $appends =['out_casted'];
 
     function getOutCastedAttribute(){
+
+        if($this->out_descompress==null){
+            return null;
+        }
         $array_result =  (((array)json_decode($this->out_descompress)));
         $noprocesable = "no procesable";
         if(isset($array_result["body"])){
