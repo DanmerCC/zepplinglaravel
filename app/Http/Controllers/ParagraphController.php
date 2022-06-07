@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DescromprimirRequest;
+use App\Http\Requests\RunParagrafoRequest;
 use App\Jobs\ParagraphJob;
 use App\Models\PharagraphResult;
 use App\Models\Process;
+use App\Models\Result;
+use App\ResponseZeppelin;
 use Illuminate\Http\Request;
 
 class ParagraphController extends Controller
@@ -20,7 +23,10 @@ class ParagraphController extends Controller
         return "trabajo agregado";
     }
 
-    function paragrafo($index,Request $request){
+    function paragrafo($index,RunParagrafoRequest $request){
+
+        $noteBookId = env('ZEPLLING_BOOK1_ID');
+        $paragraphForDescompressId = $index;
 
         $params = $request->get('params')??[];
 
@@ -28,6 +34,14 @@ class ParagraphController extends Controller
         $result = $obj->paragraph()->runParagraphSync(str_replace('paragraph_','',env('ZEPLLING_BOOK1_ID')),$index,[
                 "params"=>$params
         ]);
+
+        $resultModel = new Result();
+        $resultModel->notebook_id = $noteBookId;
+        $resultModel->paragraph_id = $paragraphForDescompressId;
+        $resultModel->outout = json_encode(ResponseZeppelin::getDataResponse((array)$result));
+        $resultModel->response = json_encode($result);
+        $resultModel->process_id = $request->process_id;
+        $resultModel->save();
 
         return $result;
     }

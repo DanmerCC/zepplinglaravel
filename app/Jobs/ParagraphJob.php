@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Process;
+use App\Models\Result;
 use App\ResponseZeppelin;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -36,11 +37,13 @@ class ParagraphJob implements ShouldQueue
      */
     public function handle()
     {
+        $result = null;
         try {
-
+            $noteBookId = env('ZEPLLING_BOOK1_ID');
+            $paragraphForDescompressId = env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL');
             Log::infO("Iniciando proceso de descompresion ".env('ZEPLLING_HOST'));
             $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
-            $result = $obj->paragraph()->runParagraphSync(str_replace('paragraph_','',env('ZEPLLING_BOOK1_ID')),env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'),[
+            $result = $obj->paragraph()->runParagraphSync(str_replace('paragraph_','',$noteBookId),$paragraphForDescompressId,[
                     "params"=>[
                         "fecha"=>$this->fecha
                     ]
@@ -53,6 +56,8 @@ class ParagraphJob implements ShouldQueue
             $this->process->out_descompress = json_encode($result);
             $this->process->status = 'ENDED';
             $this->process->save();
+
+
         } catch (\Throwable $th) {
             Log::info("error al ejecutar paragrafo");
             $this->process->out_descompress = $th->getMessage();
@@ -60,6 +65,14 @@ class ParagraphJob implements ShouldQueue
             $this->process->save();
             report($th);
         }
+
+        $history = new Result();
+        $history->notebook_id = $noteBookId;
+        $history->paragraph_id = $paragraphForDescompressId;
+        $history->outout = ResponseZeppelin::getDataResponse((array)$result);
+        $history->response = json_decode($result);
+        $history->process_id = $this->process->id;
+        $history->save();
 
     }
 }

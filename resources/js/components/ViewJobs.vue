@@ -22,8 +22,8 @@
                 </div>-->
             </div>
         </template>
-        <template #parrafo2>
-            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo)"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
+        <template #parrafo2="{row}">
+            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo,row.id)"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
         </template>
         <template #mostrar_data="{ item ,row}">
           <div class="container" v-if="row.status == 'ENDED'">
@@ -66,14 +66,14 @@
     <modal-component :isExtraLarge="true" v-if="modalParrafo!=null" @close="modalParrafo = null;  resultadoParagrafoStandar=''" :title="modalParrafo.title">
         <template #body>
         <div class="container">
-        <div class="row">
-            <div class="col-6" v-for="(param,index) in modalParrafo.settings.params">
-                <label  :for="'input_'+index">
-                    {{ index }}
-                </label>
-                <input :name="'input_'+index" :id="'input_'+index" class="form-control" type="text" v-model="modalParrafo.settings.params[index]">
+            <div class="row">
+                <div class="col-6" v-for="(param,index) in modalParrafo.settings.params">
+                    <label  :for="'input_'+index">
+                        {{ index }}
+                    </label>
+                    <input :name="'input_'+index" :id="'input_'+index" class="form-control" type="text" v-model="modalParrafo.settings.params[index]">
+                </div>
             </div>
-        </div>
         </div>
 
             <div class="container" v-if="resultadoParagrafoStandar!='' && resultadoParagrafoStandar!=null">
@@ -82,7 +82,7 @@
         </template>
         <template #footer>
             <div>
-            <button class="btn btn-primary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params)">Enviar</button>
+            <button class="btn btn-primary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
             </div>
         </template>
     </modal-component>
@@ -143,18 +143,18 @@ only showing top 20 rows
     };
   },
   methods: {
-    viewParrafoResult(parrafo,params){
-        let data = {}
+    viewParrafoResult(parrafo,params,process_id){
+        let data = {...params,process_id}
         console.log(params)
-        axios.post(`/pararafosSinParametro/${parrafo.id}`,data)
+        axios.post(`/parrafostandar/${parrafo.id}`,data)
         .then((response)=>{
             console.log(response);
             this.resultadoParagrafoStandar = response.data.body.msg.map(x=>x.data).join("\n")
         })
         .catch(error=>console.error(error))
     },
-    showModal(parrafo){
-        this.modalParrafo = parrafo
+    showModal(parrafo,process_id){
+        this.modalParrafo = {...parrafo,process_id:process_id}
     },
     parrafo2(){
         let data = {}

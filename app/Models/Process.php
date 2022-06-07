@@ -17,6 +17,8 @@ class Process extends Model
 
     protected $appends =['out_casted'];
 
+    protected $with = ['results'];
+
     function getOutCastedAttribute(){
 
         if($this->out_descompress==null){
@@ -39,5 +41,15 @@ class Process extends Model
         }
 
         return (((array)json_decode($this->out_descompress)));
+    }
+
+    /**
+     * Get all of the results for the Process
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function results(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Result::class, 'process_id', 'id');
     }
 }

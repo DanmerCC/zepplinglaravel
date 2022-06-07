@@ -8159,6 +8159,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -8283,12 +8289,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    viewParrafoResult: function viewParrafoResult(parrafo, params) {
+    viewParrafoResult: function viewParrafoResult(parrafo, params, process_id) {
       var _this = this;
 
-      var data = {};
+      var data = _objectSpread(_objectSpread({}, params), {}, {
+        process_id: process_id
+      });
+
       console.log(params);
-      axios.post("/pararafosSinParametro/".concat(parrafo.id), data).then(function (response) {
+      axios.post("/parrafostandar/".concat(parrafo.id), data).then(function (response) {
         console.log(response);
         _this.resultadoParagrafoStandar = response.data.body.msg.map(function (x) {
           return x.data;
@@ -8297,8 +8306,10 @@ __webpack_require__.r(__webpack_exports__);
         return console.error(error);
       });
     },
-    showModal: function showModal(parrafo) {
-      this.modalParrafo = parrafo;
+    showModal: function showModal(parrafo, process_id) {
+      this.modalParrafo = _objectSpread(_objectSpread({}, parrafo), {}, {
+        process_id: process_id
+      });
     },
     parrafo2: function parrafo2() {
       var _this2 = this;
@@ -31590,7 +31601,8 @@ var render = function () {
               },
               {
                 key: "parrafo2",
-                fn: function () {
+                fn: function (ref) {
+                  var row = ref.row
                   return _vm._l(_vm.parrafos, function (parrafo, index) {
                     return _c(
                       "button",
@@ -31598,7 +31610,7 @@ var render = function () {
                         staticClass: "btn btn-primary",
                         on: {
                           click: function ($event) {
-                            return _vm.showModal(parrafo)
+                            return _vm.showModal(parrafo, row.id)
                           },
                         },
                       },
@@ -31613,7 +31625,6 @@ var render = function () {
                     )
                   })
                 },
-                proxy: true,
               },
               {
                 key: "mostrar_data",
@@ -31744,9 +31755,9 @@ var render = function () {
                                   { attrs: { for: "input_" + index } },
                                   [
                                     _vm._v(
-                                      "\n                  " +
+                                      "\n                      " +
                                         _vm._s(index) +
-                                        "\n              "
+                                        "\n                  "
                                     ),
                                   ]
                                 ),
@@ -31819,7 +31830,8 @@ var render = function () {
                               click: function ($event) {
                                 return _vm.viewParrafoResult(
                                   _vm.modalParrafo,
-                                  _vm.modalParrafo.settings.params
+                                  _vm.modalParrafo.settings.params,
+                                  _vm.modalParrafo.process_id
                                 )
                               },
                             },
@@ -31834,7 +31846,7 @@ var render = function () {
               ],
               null,
               false,
-              311277862
+              1397496175
             ),
           })
         : _vm._e(),

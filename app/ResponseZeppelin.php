@@ -19,14 +19,24 @@ class ResponseZeppelin {
     static function getDataResponse(array $response){
 
         if(!isset($response['body'])){
-            return false;
+            return null;
         }
         $body = (array)$response['body'];
 
         if(!isset($body['msg'])){
-            return false;
+            return null;
         }
         $data = $body['msg'];
+
+        if(is_array($data)){
+            $joined = "";
+            for ($i=0; $i < count($data); $i++) {
+                $arrayData = (array)$data[$i];
+                $joined .= $arrayData['data'];
+            }
+
+            return $joined;
+        }
 
         return $data;
     }
