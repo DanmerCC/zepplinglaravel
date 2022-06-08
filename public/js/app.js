@@ -13505,7 +13505,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.text[data-v-ad6bfef4] {\n    display: block!important;\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n    line-height: 1.42857143!important;\n    margin: 0 0 5px!important;\n    padding-top: 2px;\n    unicode-bidi: embed;\n    white-space: pre-wrap;\n    word-break: break-all!important;\n    word-wrap: break-word!important;\n}\n.plainTextContainer[data-v-ad6bfef4] {\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.text[data-v-ad6bfef4] {\n    display: block!important;\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n    line-height: 1.42857143!important;\n    margin: 0 0 5px!important;\n    padding-top: 2px;\n    unicode-bidi: embed;\n    white-space: pre-wrap;\n    word-break: break-all!important;\n    word-wrap: break-word!important;\n}\n.plainTextContainer[data-v-ad6bfef4] {\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n}\n[data-v-ad6bfef4] .btn-womprimary,.btn.btn-primary[data-v-ad6bfef4] {\n    background-color: #612D8A !important;\n    color: white !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31547,7 +31547,7 @@ var render = function () {
         _c(
           "button",
           {
-            staticClass: "btn btn-primary",
+            staticClass: "btn btn-womprimary",
             on: {
               click: function ($event) {
                 _vm.newModal = true
@@ -31825,7 +31825,7 @@ var render = function () {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-primary",
+                            staticClass: "btn btn-primarywom",
                             on: {
                               click: function ($event) {
                                 return _vm.viewParrafoResult(
@@ -31846,7 +31846,7 @@ var render = function () {
               ],
               null,
               false,
-              1397496175
+              2659810394
             ),
           })
         : _vm._e(),

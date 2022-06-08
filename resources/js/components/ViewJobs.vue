@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <button class="btn btn-primary" @click="newModal = true">Nuevo</button>
+      <button class="btn btn-womprimary" @click="newModal = true">Nuevo</button>
     </div>
     <div class="row">
       <data-table :columns="columns" :items="process">
@@ -82,7 +82,7 @@
         </template>
         <template #footer>
             <div>
-            <button class="btn btn-primary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
+            <button class="btn btn-primarywom" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
             </div>
         </template>
     </modal-component>
@@ -224,5 +224,10 @@ only showing top 20 rows
 .plainTextContainer {
     font-family: Monaco,Menlo,"Ubuntu Mono",Consolas,source-code-pro,monospace;
     font-size: 12px!important;
+}
+
+::v-deep .btn-womprimary,.btn.btn-primary {
+    background-color: #612D8A !important;
+    color: white !important;;
 }
 </style>

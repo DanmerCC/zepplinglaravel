@@ -13,13 +13,12 @@
         }
     </style>
 	<body>
-            <ul class="menu">
-                <li><a href="#">INICIO</a></li>
-                <li><a href="http://10.40.111.88:8080/#/notebook/2GZRVSJZV">CONSULTA</a></li>
-                <li><a href="historial.html">HISTORIAL DE BUSQUEDA</a></li>
-                <li><a href="contacto.html">CONTACTO</a></li>
-                <li><a href="index.html">CERRAR SESION</a></li>
-			</ul>
+        <br>
+           <div class="header">
+                <div class="logo">
+                    <img src="/assets/logo.png">
+                </div>
+           </div>
             <div id="app">
                 <view-jobs></view-jobs>
             </div>

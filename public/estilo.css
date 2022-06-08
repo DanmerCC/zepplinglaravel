@@ -36,5 +36,18 @@ body{
 	justify-content: center;
 	align-items: center;
 }
-  
 
+.header {
+    width: 100%;
+    align-content: center;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 20vh;
+}
+
+.logo {
+    padding: 30px;
+    max-width: 178px;
+    height: auto;
+}
