@@ -84,7 +84,7 @@ cuando finalice se le enviara un correo electronico.</small>
             </div>
             <div class="row " v-if="verHistorial">
                 <div class="container" >
-                    <div class="text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
+                    <div class="text-bordered text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
                 </div>
             </div>
             <div v-else>
@@ -273,7 +273,7 @@ only showing top 20 rows
     border-color: #9d6fc1 !important;
 }
 
-.row-bordered {
+.text-bordered {
     border: dotted gray;
 }
 </style>
