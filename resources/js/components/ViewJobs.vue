@@ -23,7 +23,8 @@
             </div>
         </template>
         <template #parrafo2="{row}">
-            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo,row.id)"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
+            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo,row.id,index)"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
+
         </template>
         <template #mostrar_data="{ item ,row}">
           <div class="container" v-if="row.status == 'ENDED'">
@@ -46,11 +47,14 @@
           <label for="new_process_date">Fecha</label>
           <input
             v-model="new_process_date"
+            class="form-control"
             type="date"
             name="new_process_date"
             id="new_process_date"
             placeholder="Fecha"
           />
+          <small id="emailHelp" class="form-text text-muted">La Descompresión de los archivos puede tardar un tiempo
+cuando finalice se le enviara un correo electronico.</small>
         </div>
       </template>
       <template #footer>
@@ -63,7 +67,7 @@
         </button>
       </template>
     </modal-component>
-    <modal-component :isExtraLarge="true" v-if="modalParrafo!=null" @close="modalParrafo = null;  resultadoParagrafoStandar=''" :title="modalParrafo.title">
+    <modal-component :isExtraLarge="true" v-if="modalParrafo!=null" @close="modalParrafo = null;  resultadoParagrafoStandar='';paragraphLowInfo=''" :title="modalParrafo.title">
         <template #body>
         <div class="container">
             <div class="row">
@@ -72,8 +76,25 @@
                         {{ index }}
                     </label>
                     <input :name="'input_'+index" :id="'input_'+index" class="form-control" type="text" v-model="modalParrafo.settings.params[index]">
+                     <small id="emailHelp" class="form-text text-muted">{{paragraphLowInfo}}</small>
+                </div>
+                <div class="col-12" v-if="Object.keys(modalParrafo.settings.params) == 0">
+                    <h4>No son necesarios datos de entrada</h4>
                 </div>
             </div>
+            <div class="row " v-if="verHistorial">
+                <div class="container" >
+                    <div class="text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
+                </div>
+            </div>
+            <div v-else>
+                <button class="btn btn-default btn-sm" @click="verHistorial = true"><small>ver historial</small></button>
+            </div>
+            <button v-if="verHistorial" class="btn btn-sm btn-default" @click="verHistorial = false">
+                <small>
+                    cerrar historial
+                </small>
+            </button>
         </div>
 
             <div class="container" v-if="resultadoParagrafoStandar!='' && resultadoParagrafoStandar!=null">
@@ -82,7 +103,7 @@
         </template>
         <template #footer>
             <div>
-            <button class="btn btn-primarywom" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
+            <button class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
             </div>
         </template>
     </modal-component>
@@ -114,6 +135,8 @@ export default {
       parrafos:[],
       modalParrafo:null,
       resultadoParagrafoStandar:'',
+      paragraphLowInfo:'',
+      verHistorial:false,
       example:` +-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+
 |         start_time|           end_time|      msisdn|           imsi|           imei|lac_tac|sac_eci|ip_address_assigned|
 +-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+
@@ -149,11 +172,18 @@ only showing top 20 rows
         axios.post(`/parrafostandar/${parrafo.id}`,data)
         .then((response)=>{
             console.log(response);
-            this.resultadoParagrafoStandar = response.data.body.msg.map(x=>x.data).join("\n")
+            this.resultadoParagrafoStandar = response.data.body.msg.map(x=>x.data.replaceAll('\n',`
+            `)).join("\n")
         })
         .catch(error=>console.error(error))
     },
-    showModal(parrafo,process_id){
+    showModal(parrafo,process_id,index){
+
+        this.paragraphLowInfo = ''
+        if(index == 0){
+
+            this.paragraphLowInfo = 'a consulta de IP Publica puede tardar un tiempo cuando finalice se le enviara un correo electronico.'
+        }
         this.modalParrafo = {...parrafo,process_id:process_id}
     },
     parrafo2(){
@@ -171,6 +201,17 @@ only showing top 20 rows
             this.parrafos = response.data
         })
         .catch(error=>console.error(error))
+    },
+    getHistoryByParagraph(paragraph_id,process_id){
+        let process = this.process.find(x=>x.id == process_id)
+        let resultsFinded = []
+        process.results.forEach(result => {
+            if(result.paragraph_id == paragraph_id){
+                resultsFinded.push(result)
+            }
+        });
+        console.log(resultsFinded.map(z=>z.outout))
+        return resultsFinded.map(z=>z.outout.replaceAll("\\\"","").split("\\n").join("\n"))
     },
     loadProcess() {
       let data = {};
@@ -228,6 +269,11 @@ only showing top 20 rows
 
 ::v-deep .btn-womprimary,.btn.btn-primary {
     background-color: #612D8A !important;
-    color: white !important;;
+    color: white !important;
+    border-color: #9d6fc1 !important;
+}
+
+.row-bordered {
+    border: dotted gray;
 }
 </style>

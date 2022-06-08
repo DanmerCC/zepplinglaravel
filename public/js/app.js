@@ -8256,6 +8256,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8285,6 +8306,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       parrafos: [],
       modalParrafo: null,
       resultadoParagrafoStandar: '',
+      paragraphLowInfo: '',
+      verHistorial: false,
       example: " +-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\n|         start_time|           end_time|      msisdn|           imsi|           imei|lac_tac|sac_eci|ip_address_assigned|\n+-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\n|2022_05_30 16:29:42|2022_05_30 16:29:42|573028491759|732360024222496|861880055883816|    193|   3641|    100.104.209.203|\n|2022_05_30 16:30:00|2022_05_30 16:30:01|573026724613|732360022318858|354142101165928|    e97|    4af|       10.73.210.17|\n|2022_05_30 16:30:33|2022_05_30 16:30:33|573026724613|732360022318858|354142101165928|    e97|    4af|       100.97.81.80|\n|2022_05_30 16:29:25|2022_05_30 16:30:30|573027594996|732360027929104|359458086883425|   2ee1|   4bfb|       100.98.47.72|\n|2022_05_30 16:28:32|2022_05_30 16:30:41|573014289449|732360027351348|355620084350103|     25|   5155|      10.71.199.137|\n|2022_05_30 16:27:42|2022_05_30 16:30:45|573236255817|732360126467835|355567114941924|     74|   7bc3|       10.65.95.194|\n|2022_05_30 16:28:31|2022_05_30 16:30:42|573219427507|732360022818693|351622118022439|   1dba|   303d|    100.100.139.202|\n|2022_05_30 16:27:28|2022_05_30 16:29:57|573238046214|732360021279975|352017077971776|    d49|   65c8|               null|\n|2022_05_30 16:27:48|2022_05_30 16:30:10|573026998343|732360023706282|864987042848807|     7f|   73fa|        10.70.48.38|\n|2022_05_30 16:25:54|2022_05_30 16:30:17|573212003048|732360028542158|865842033050914|   17b8|    b27|      10.67.251.225|\n|2022_05_30 16:29:21|2022_05_30 16:30:23|573142327686|732360021249299|863697043717395|    e7e|   2d5a|               null|\n|2022_05_30 16:30:04|2022_05_30 16:30:23|573142327686|732360021249299|863697043717395|    e7e|   2d47|               null|\n|2022_05_30 16:30:04|2022_05_30 16:30:04|573142327686|732360021249299|863697043717395|    e7e|   2d47|               null|\n|2022_05_30 16:16:20|2022_05_30 16:30:13|573146540500|732360028571014|860454047082407|    db4|   5b46|        10.73.8.125|\n|2022_05_30 16:29:26|2022_05_30 16:30:28|573123069909|732360021994168|358742570324645|   1db7|   d4f5|       100.97.54.83|\n|2022_05_30 16:27:22|2022_05_30 16:30:53|573028556031|732360022227873|354267098698423|    e8b|   2ca3|               null|\n|2022_05_30 16:29:43|2022_05_30 16:30:46|573238088927|732360022892283|866175068057853|   3af2|   d023|               null|\n|2022_05_30 16:27:16|2022_05_30 16:30:57|573027090489|732360023553013|354407089170061|    d4d|   9140|     100.103.83.152|\n|2022_05_30 16:29:05|2022_05_30 16:30:18|573026013282|732360021741129|865032046219660|    d49|   64ea|     100.101.62.136|\n|2022_05_30 16:21:44|2022_05_30 16:31:02|573238085648|732360028464729|860692058280614|   3332|   d9ba|      10.67.234.113|\n+-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\nonly showing top 20 rows\n"
     };
   },
@@ -8300,13 +8323,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.post("/parrafostandar/".concat(parrafo.id), data).then(function (response) {
         console.log(response);
         _this.resultadoParagrafoStandar = response.data.body.msg.map(function (x) {
-          return x.data;
+          return x.data.replaceAll('\n', "\n            ");
         }).join("\n");
       })["catch"](function (error) {
         return console.error(error);
       });
     },
-    showModal: function showModal(parrafo, process_id) {
+    showModal: function showModal(parrafo, process_id, index) {
+      this.paragraphLowInfo = '';
+
+      if (index == 0) {
+        this.paragraphLowInfo = 'a consulta de IP Publica puede tardar un tiempo cuando finalice se le enviara un correo electronico.';
+      }
+
       this.modalParrafo = _objectSpread(_objectSpread({}, parrafo), {}, {
         process_id: process_id
       });
@@ -8329,6 +8358,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this3.parrafos = response.data;
       })["catch"](function (error) {
         return console.error(error);
+      });
+    },
+    getHistoryByParagraph: function getHistoryByParagraph(paragraph_id, process_id) {
+      var process = this.process.find(function (x) {
+        return x.id == process_id;
+      });
+      var resultsFinded = [];
+      process.results.forEach(function (result) {
+        if (result.paragraph_id == paragraph_id) {
+          resultsFinded.push(result);
+        }
+      });
+      console.log(resultsFinded.map(function (z) {
+        return z.outout;
+      }));
+      return resultsFinded.map(function (z) {
+        return z.outout.replaceAll("\\\"", "").split("\\n").join("\n");
       });
     },
     loadProcess: function loadProcess() {
@@ -13505,7 +13551,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.text[data-v-ad6bfef4] {\n    display: block!important;\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n    line-height: 1.42857143!important;\n    margin: 0 0 5px!important;\n    padding-top: 2px;\n    unicode-bidi: embed;\n    white-space: pre-wrap;\n    word-break: break-all!important;\n    word-wrap: break-word!important;\n}\n.plainTextContainer[data-v-ad6bfef4] {\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n}\n[data-v-ad6bfef4] .btn-womprimary,.btn.btn-primary[data-v-ad6bfef4] {\n    background-color: #612D8A !important;\n    color: white !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.text[data-v-ad6bfef4] {\n    display: block!important;\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n    line-height: 1.42857143!important;\n    margin: 0 0 5px!important;\n    padding-top: 2px;\n    unicode-bidi: embed;\n    white-space: pre-wrap;\n    word-break: break-all!important;\n    word-wrap: break-word!important;\n}\n.plainTextContainer[data-v-ad6bfef4] {\n    font-family: Monaco,Menlo,\"Ubuntu Mono\",Consolas,source-code-pro,monospace;\n    font-size: 12px!important;\n}\n[data-v-ad6bfef4] .btn-womprimary,.btn.btn-primary[data-v-ad6bfef4] {\n    background-color: #612D8A !important;\n    color: white !important;\n    border-color: #9d6fc1 !important;\n}\n.row-bordered[data-v-ad6bfef4] {\n    border: dotted gray;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31573,7 +31619,9 @@ var render = function () {
                     row.status == "STARTED"
                       ? _c("div", [
                           _c("button", { staticClass: "btn btn-secundary" }, [
-                            _vm._v("\n              ...CARGANDO\n          "),
+                            _vm._v(
+                              "\n                ...CARGANDO\n            "
+                            ),
                           ]),
                         ])
                       : _c("div", [
@@ -31610,7 +31658,7 @@ var render = function () {
                         staticClass: "btn btn-primary",
                         on: {
                           click: function ($event) {
-                            return _vm.showModal(parrafo, row.id)
+                            return _vm.showModal(parrafo, row.id, index)
                           },
                         },
                       },
@@ -31677,6 +31725,7 @@ var render = function () {
                               expression: "new_process_date",
                             },
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "date",
                             name: "new_process_date",
@@ -31693,6 +31742,19 @@ var render = function () {
                             },
                           },
                         }),
+                        _vm._v(" "),
+                        _c(
+                          "small",
+                          {
+                            staticClass: "form-text text-muted",
+                            attrs: { id: "emailHelp" },
+                          },
+                          [
+                            _vm._v(
+                              "La Descompresión de los archivos puede tardar un tiempo\ncuando finalice se le enviara un correo electronico."
+                            ),
+                          ]
+                        ),
                       ]),
                     ]
                   },
@@ -31713,7 +31775,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("\n        Iniciar\n      ")]
+                        [_vm._v("\n          Iniciar\n        ")]
                       ),
                     ]
                   },
@@ -31722,7 +31784,7 @@ var render = function () {
               ],
               null,
               false,
-              4083486155
+              2170613672
             ),
           })
         : _vm._e(),
@@ -31734,6 +31796,7 @@ var render = function () {
               close: function ($event) {
                 _vm.modalParrafo = null
                 _vm.resultadoParagrafoStandar = ""
+                _vm.paragraphLowInfo = ""
               },
             },
             scopedSlots: _vm._u(
@@ -31746,61 +31809,140 @@ var render = function () {
                         _c(
                           "div",
                           { staticClass: "row" },
-                          _vm._l(
-                            _vm.modalParrafo.settings.params,
-                            function (param, index) {
-                              return _c("div", { staticClass: "col-6" }, [
-                                _c(
-                                  "label",
-                                  { attrs: { for: "input_" + index } },
-                                  [
-                                    _vm._v(
-                                      "\n                      " +
-                                        _vm._s(index) +
-                                        "\n                  "
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
+                          [
+                            _vm._l(
+                              _vm.modalParrafo.settings.params,
+                              function (param, index) {
+                                return _c("div", { staticClass: "col-6" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "input_" + index } },
+                                    [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(index) +
+                                          "\n                    "
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.modalParrafo.settings.params[
+                                            index
+                                          ],
+                                        expression:
+                                          "modalParrafo.settings.params[index]",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      name: "input_" + index,
+                                      id: "input_" + index,
+                                      type: "text",
+                                    },
+                                    domProps: {
                                       value:
                                         _vm.modalParrafo.settings.params[index],
-                                      expression:
-                                        "modalParrafo.settings.params[index]",
                                     },
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: {
-                                    name: "input_" + index,
-                                    id: "input_" + index,
-                                    type: "text",
-                                  },
-                                  domProps: {
-                                    value:
-                                      _vm.modalParrafo.settings.params[index],
-                                  },
-                                  on: {
-                                    input: function ($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.modalParrafo.settings.params,
-                                        index,
-                                        $event.target.value
-                                      )
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.modalParrafo.settings.params,
+                                          index,
+                                          $event.target.value
+                                        )
+                                      },
                                     },
-                                  },
-                                }),
-                              ])
-                            }
-                          ),
-                          0
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "small",
+                                    {
+                                      staticClass: "form-text text-muted",
+                                      attrs: { id: "emailHelp" },
+                                    },
+                                    [_vm._v(_vm._s(_vm.paragraphLowInfo))]
+                                  ),
+                                ])
+                              }
+                            ),
+                            _vm._v(" "),
+                            Object.keys(_vm.modalParrafo.settings.params) == 0
+                              ? _c("div", { staticClass: "col-12" }, [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "No son necesarios datos de entrada"
+                                    ),
+                                  ]),
+                                ])
+                              : _vm._e(),
+                          ],
+                          2
                         ),
+                        _vm._v(" "),
+                        _vm.verHistorial
+                          ? _c("div", { staticClass: "row " }, [
+                              _c(
+                                "div",
+                                { staticClass: "container" },
+                                _vm._l(
+                                  _vm.getHistoryByParagraph(
+                                    _vm.modalParrafo.id,
+                                    _vm.modalParrafo.process_id
+                                  ),
+                                  function (result) {
+                                    return _c("div", {
+                                      staticClass: "text plainTextContainer",
+                                      domProps: { innerHTML: _vm._s(result) },
+                                    })
+                                  }
+                                ),
+                                0
+                              ),
+                            ])
+                          : _c("div", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-default btn-sm",
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.verHistorial = true
+                                    },
+                                  },
+                                },
+                                [_c("small", [_vm._v("ver historial")])]
+                              ),
+                            ]),
+                        _vm._v(" "),
+                        _vm.verHistorial
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-sm btn-default",
+                                on: {
+                                  click: function ($event) {
+                                    _vm.verHistorial = false
+                                  },
+                                },
+                              },
+                              [
+                                _c("small", [
+                                  _vm._v(
+                                    "\n                    cerrar historial\n                "
+                                  ),
+                                ]),
+                              ]
+                            )
+                          : _vm._e(),
                       ]),
                       _vm._v(" "),
                       _vm.resultadoParagrafoStandar != "" &&
@@ -31825,7 +31967,7 @@ var render = function () {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-primarywom",
+                            staticClass: "btn btn-womprimary",
                             on: {
                               click: function ($event) {
                                 return _vm.viewParrafoResult(
@@ -31846,7 +31988,7 @@ var render = function () {
               ],
               null,
               false,
-              2659810394
+              3804354997
             ),
           })
         : _vm._e(),
