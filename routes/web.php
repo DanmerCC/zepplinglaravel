@@ -23,6 +23,7 @@ Route::post('descomprimir',[ParagraphController::class,'descomprimir']);
 Route::get('process',[ParagraphController::class,'process']);
 Route::post('parrafostandar/{index}',[ParagraphController::class,'paragrafo']);
 Route::get('paragraphs',[ParagraphController::class,'paragraphs']);
+Route::post('stop/decompres',[ParagraphController::class,'stopDecompres']);
 Route::get('/zepplingtst', function () {
     /*$obj = new ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
     $result = $obj->paragraph()->runParagraphSync('2H5MVKKF1','20220522-173128_2133226449',[

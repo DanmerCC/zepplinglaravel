@@ -8277,6 +8277,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8301,6 +8307,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       { name: "Parrafo 11", value: "parrafo11" },
       { name: "Parrafo 12", value: "parrafo12" },*/
       ],
+      showOptionsInprocess: null,
       process: [],
       worker: null,
       parrafos: [],
@@ -8312,8 +8319,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
-    viewParrafoResult: function viewParrafoResult(parrafo, params, process_id) {
+    deCompress: function deCompress(procesInfo) {
       var _this = this;
+
+      console.log(procesInfo);
+      var data = {
+        id: procesInfo.id
+      };
+      axios.post("/stop/decompres", data).then(function (response) {
+        var res = response.data;
+
+        if (res.status == 'OK') {
+          _this.showOptionsInprocess = null;
+        }
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    viewParrafoResult: function viewParrafoResult(parrafo, params, process_id) {
+      var _this2 = this;
 
       var data = _objectSpread(_objectSpread({}, params), {}, {
         process_id: process_id
@@ -8322,7 +8346,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(params);
       axios.post("/parrafostandar/".concat(parrafo.id), data).then(function (response) {
         console.log(response);
-        _this.resultadoParagrafoStandar = response.data.body.msg.map(function (x) {
+        _this2.resultadoParagrafoStandar = response.data.body.msg.map(function (x) {
           return x.data.replaceAll('\n', "\n            ");
         }).join("\n");
       })["catch"](function (error) {
@@ -8341,21 +8365,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     parrafo2: function parrafo2() {
-      var _this2 = this;
+      var _this3 = this;
 
       var data = {};
       axios.post("/parrafo2", data).then(function (response) {
-        _this2.loadProcess();
+        _this3.loadProcess();
       })["catch"](function (error) {
         return console.error(error);
       });
     },
     getParrafos: function getParrafos() {
-      var _this3 = this;
+      var _this4 = this;
 
       var data = {};
       axios.get("/paragraphs", data).then(function (response) {
-        _this3.parrafos = response.data;
+        _this4.parrafos = response.data;
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -8378,25 +8402,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     loadProcess: function loadProcess() {
-      var _this4 = this;
+      var _this5 = this;
 
       var data = {};
       axios.get("/process", data).then(function (response) {
-        _this4.process = response.data;
+        _this5.process = response.data;
       })["catch"](function (error) {
         return console.error(error);
       });
     },
     iniciarDescompresion: function iniciarDescompresion() {
-      var _this5 = this;
+      var _this6 = this;
 
       var data = {
         fecha: this.dateFormated
       };
       axios.post("/descomprimir", data).then(function (response) {
-        _this5.newModal = false;
+        _this6.newModal = false;
 
-        _this5.loadProcess();
+        _this6.loadProcess();
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -31618,11 +31642,22 @@ var render = function () {
                   return [
                     row.status == "STARTED"
                       ? _c("div", [
-                          _c("button", { staticClass: "btn btn-secundary" }, [
-                            _vm._v(
-                              "\n                ...CARGANDO\n            "
-                            ),
-                          ]),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-secundary",
+                              on: {
+                                click: function ($event) {
+                                  _vm.showOptionsInprocess = row
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                ...CARGANDO\n            "
+                              ),
+                            ]
+                          ),
                         ])
                       : _c("div", [
                           row.status == "FALLO"
@@ -31990,6 +32025,45 @@ var render = function () {
               null,
               false,
               777109672
+            ),
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showOptionsInprocess != null
+        ? _c("modal-component", {
+            on: {
+              close: function ($event) {
+                _vm.showOptionsInprocess = null
+              },
+            },
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "body",
+                  fn: function () {
+                    return [
+                      _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            on: {
+                              click: function ($event) {
+                                return _vm.deCompress(_vm.showOptionsInprocess)
+                              },
+                            },
+                          },
+                          [_vm._v("Interrumpir proceso")]
+                        ),
+                      ]),
+                    ]
+                  },
+                  proxy: true,
+                },
+              ],
+              null,
+              false,
+              2425061006
             ),
           })
         : _vm._e(),

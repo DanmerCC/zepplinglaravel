@@ -55,6 +55,17 @@ class ParagraphController extends Controller
         return $result->body->paragraphs;
     }
 
+    function stopDecompres(Request $request){
+        $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
+        $result = $obj->paragraph()->stopParagraph(env('ZEPLLING_BOOK1_ID'), env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'));
+        if($result->status == 'OK'){
+            $process = Process::find($request->id);
+            $process->status = 'ENDED';
+            $process->out_descompress = 'Cancelado por el usuario';
+            $process->save();
+        }
+        return $result;
+    }
 
     function process(){
         return Process::query()->orderBy('id', 'DESC')->get();

@@ -39,6 +39,9 @@ class ParagraphJob implements ShouldQueue
     {
         $result = null;
         try {
+            $currentProcess = Process::find($this->process->id);
+
+            if($currentProcess->status == 'ENDED') return;
             $noteBookId = env('ZEPLLING_BOOK1_ID');
             $paragraphForDescompressId = env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL');
             Log::infO("Iniciando proceso de descompresion ".env('ZEPLLING_HOST'));

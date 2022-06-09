@@ -7,7 +7,7 @@
       <data-table :columns="columns" :items="process">
         <template #descompresion="{row}">
             <div v-if="row.status == 'STARTED'">
-            <button class="btn btn-secundary">
+            <button class="btn btn-secundary" @click="showOptionsInprocess = row">
                 ...CARGANDO
             </button>
 
@@ -96,7 +96,6 @@ cuando finalice se le enviara un correo electronico.</small>
                 </small>
             </button>
         </div>
-
             <div class="container" v-if="resultadoParagrafoStandar!='' && resultadoParagrafoStandar!=null">
                 <div class="text plainTextContainer">{{ resultadoParagrafoStandar }}</div>
             </div>
@@ -104,6 +103,13 @@ cuando finalice se le enviara un correo electronico.</small>
         <template #footer>
             <div>
             <button class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
+            </div>
+        </template>
+    </modal-component>
+    <modal-component v-if="showOptionsInprocess!=null" @close="showOptionsInprocess = null">
+        <template #body>
+            <div>
+                <button class="btn btn-primary" @click="deCompress(showOptionsInprocess)">Interrumpir proceso</button>
             </div>
         </template>
     </modal-component>
@@ -130,6 +136,7 @@ export default {
         { name: "Parrafo 11", value: "parrafo11" },
         { name: "Parrafo 12", value: "parrafo12" },*/
       ],
+      showOptionsInprocess:null,
       process: [],
       worker:null,
       parrafos:[],
@@ -166,6 +173,20 @@ only showing top 20 rows
     };
   },
   methods: {
+    deCompress(procesInfo){
+        console.log(procesInfo)
+        let data = {
+            id:procesInfo.id
+        }
+        axios.post(`/stop/decompres`,data)
+        .then((response)=>{
+            const res = response.data
+            if(res.status == 'OK'){
+                this.showOptionsInprocess = null
+            }
+        })
+        .catch(error=>console.error(error))
+    },
     viewParrafoResult(parrafo,params,process_id){
         let data = {...params,process_id}
         console.log(params)
