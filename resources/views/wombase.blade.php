@@ -5,6 +5,8 @@
 		<title>MENU ID</title>
 		<link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
 		<link rel="stylesheet" type="text/css" href="estilo.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 	</head>
     <style>
