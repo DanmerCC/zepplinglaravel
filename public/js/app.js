@@ -8283,6 +8283,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8314,6 +8317,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       modalParrafo: null,
       resultadoParagrafoStandar: '',
       paragraphLowInfo: '',
+      interrumpt_other_process: true,
       verHistorial: false,
       example: " +-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\n|         start_time|           end_time|      msisdn|           imsi|           imei|lac_tac|sac_eci|ip_address_assigned|\n+-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\n|2022_05_30 16:29:42|2022_05_30 16:29:42|573028491759|732360024222496|861880055883816|    193|   3641|    100.104.209.203|\n|2022_05_30 16:30:00|2022_05_30 16:30:01|573026724613|732360022318858|354142101165928|    e97|    4af|       10.73.210.17|\n|2022_05_30 16:30:33|2022_05_30 16:30:33|573026724613|732360022318858|354142101165928|    e97|    4af|       100.97.81.80|\n|2022_05_30 16:29:25|2022_05_30 16:30:30|573027594996|732360027929104|359458086883425|   2ee1|   4bfb|       100.98.47.72|\n|2022_05_30 16:28:32|2022_05_30 16:30:41|573014289449|732360027351348|355620084350103|     25|   5155|      10.71.199.137|\n|2022_05_30 16:27:42|2022_05_30 16:30:45|573236255817|732360126467835|355567114941924|     74|   7bc3|       10.65.95.194|\n|2022_05_30 16:28:31|2022_05_30 16:30:42|573219427507|732360022818693|351622118022439|   1dba|   303d|    100.100.139.202|\n|2022_05_30 16:27:28|2022_05_30 16:29:57|573238046214|732360021279975|352017077971776|    d49|   65c8|               null|\n|2022_05_30 16:27:48|2022_05_30 16:30:10|573026998343|732360023706282|864987042848807|     7f|   73fa|        10.70.48.38|\n|2022_05_30 16:25:54|2022_05_30 16:30:17|573212003048|732360028542158|865842033050914|   17b8|    b27|      10.67.251.225|\n|2022_05_30 16:29:21|2022_05_30 16:30:23|573142327686|732360021249299|863697043717395|    e7e|   2d5a|               null|\n|2022_05_30 16:30:04|2022_05_30 16:30:23|573142327686|732360021249299|863697043717395|    e7e|   2d47|               null|\n|2022_05_30 16:30:04|2022_05_30 16:30:04|573142327686|732360021249299|863697043717395|    e7e|   2d47|               null|\n|2022_05_30 16:16:20|2022_05_30 16:30:13|573146540500|732360028571014|860454047082407|    db4|   5b46|        10.73.8.125|\n|2022_05_30 16:29:26|2022_05_30 16:30:28|573123069909|732360021994168|358742570324645|   1db7|   d4f5|       100.97.54.83|\n|2022_05_30 16:27:22|2022_05_30 16:30:53|573028556031|732360022227873|354267098698423|    e8b|   2ca3|               null|\n|2022_05_30 16:29:43|2022_05_30 16:30:46|573238088927|732360022892283|866175068057853|   3af2|   d023|               null|\n|2022_05_30 16:27:16|2022_05_30 16:30:57|573027090489|732360023553013|354407089170061|    d4d|   9140|     100.103.83.152|\n|2022_05_30 16:29:05|2022_05_30 16:30:18|573026013282|732360021741129|865032046219660|    d49|   64ea|     100.101.62.136|\n|2022_05_30 16:21:44|2022_05_30 16:31:02|573238085648|732360028464729|860692058280614|   3332|   d9ba|      10.67.234.113|\n+-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+\nonly showing top 20 rows\n"
     };
@@ -8353,7 +8357,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return console.error(error);
       });
     },
-    showModal: function showModal(parrafo, process_id, index) {
+    showModal: function showModal(parrafo, process_id, index, editable) {
       this.paragraphLowInfo = '';
 
       if (index == 0) {
@@ -8361,7 +8365,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       this.modalParrafo = _objectSpread(_objectSpread({}, parrafo), {}, {
-        process_id: process_id
+        process_id: process_id,
+        editable: editable
       });
     },
     parrafo2: function parrafo2() {
@@ -8415,7 +8420,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this6 = this;
 
       var data = {
-        fecha: this.dateFormated
+        fecha: this.dateFormated,
+        interrumpt_other_process: this.interrumpt_other_process
       };
       axios.post("/descomprimir", data).then(function (response) {
         _this6.newModal = false;
@@ -31693,7 +31699,12 @@ var render = function () {
                         staticClass: "btn btn-primary",
                         on: {
                           click: function ($event) {
-                            return _vm.showModal(parrafo, row.id, index)
+                            return _vm.showModal(
+                              parrafo,
+                              row.id,
+                              index,
+                              row.status == "STARTED"
+                            )
                           },
                         },
                       },
@@ -31790,6 +31801,59 @@ var render = function () {
                             ),
                           ]
                         ),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          { attrs: { for: "interrumpt_other_process" } },
+                          [_vm._v("Interrumpir descompresiones anteriores")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.interrumpt_other_process,
+                              expression: "interrumpt_other_process",
+                            },
+                          ],
+                          attrs: {
+                            type: "checkbox",
+                            name: "interrumpt_other_process",
+                            id: "interrumpt_other_process",
+                          },
+                          domProps: {
+                            checked: Array.isArray(_vm.interrumpt_other_process)
+                              ? _vm._i(_vm.interrumpt_other_process, null) > -1
+                              : _vm.interrumpt_other_process,
+                          },
+                          on: {
+                            change: function ($event) {
+                              var $$a = _vm.interrumpt_other_process,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.interrumpt_other_process = $$a.concat([
+                                      $$v,
+                                    ]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.interrumpt_other_process = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.interrumpt_other_process = $$c
+                              }
+                            },
+                          },
+                        }),
                       ]),
                     ]
                   },
@@ -31819,7 +31883,7 @@ var render = function () {
               ],
               null,
               false,
-              2170613672
+              3731423648
             ),
           })
         : _vm._e(),
@@ -32004,6 +32068,7 @@ var render = function () {
                           "button",
                           {
                             staticClass: "btn btn-womprimary",
+                            attrs: { disabled: !_vm.modalParrafo.editable },
                             on: {
                               click: function ($event) {
                                 return _vm.viewParrafoResult(
@@ -32024,7 +32089,7 @@ var render = function () {
               ],
               null,
               false,
-              777109672
+              2481933977
             ),
           })
         : _vm._e(),

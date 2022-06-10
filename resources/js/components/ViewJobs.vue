@@ -23,7 +23,7 @@
             </div>
         </template>
         <template #parrafo2="{row}">
-            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo,row.id,index)"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
+            <button v-for="(parrafo,index) in parrafos" class="btn btn-primary" @click="showModal(parrafo,row.id,index,row.status == 'STARTED')"> {{ parrafo.title ?parrafo.title :('Parrafo '+index) }}</button>
 
         </template>
         <template #mostrar_data="{ item ,row}">
@@ -55,6 +55,9 @@
           />
           <small id="emailHelp" class="form-text text-muted">La Descompresión de los archivos puede tardar un tiempo
 cuando finalice se le enviara un correo electronico.</small>
+<br>
+            <label for="interrumpt_other_process">Interrumpir descompresiones anteriores</label>
+            <input v-model="interrumpt_other_process" type="checkbox"   name="interrumpt_other_process" id="interrumpt_other_process">
         </div>
       </template>
       <template #footer>
@@ -102,7 +105,7 @@ cuando finalice se le enviara un correo electronico.</small>
         </template>
         <template #footer>
             <div>
-            <button class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
+            <button :disabled="!modalParrafo.editable" class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
             </div>
         </template>
     </modal-component>
@@ -143,6 +146,7 @@ export default {
       modalParrafo:null,
       resultadoParagrafoStandar:'',
       paragraphLowInfo:'',
+      interrumpt_other_process:true,
       verHistorial:false,
       example:` +-------------------+-------------------+------------+---------------+---------------+-------+-------+-------------------+
 |         start_time|           end_time|      msisdn|           imsi|           imei|lac_tac|sac_eci|ip_address_assigned|
@@ -198,14 +202,14 @@ only showing top 20 rows
         })
         .catch(error=>console.error(error))
     },
-    showModal(parrafo,process_id,index){
+    showModal(parrafo,process_id,index,editable){
 
         this.paragraphLowInfo = ''
         if(index == 0){
 
             this.paragraphLowInfo = 'a consulta de IP Publica puede tardar un tiempo cuando finalice se le enviara un correo electronico.'
         }
-        this.modalParrafo = {...parrafo,process_id:process_id}
+        this.modalParrafo = {...parrafo,process_id:process_id,editable}
     },
     parrafo2(){
         let data = {}
@@ -246,6 +250,7 @@ only showing top 20 rows
     iniciarDescompresion() {
       let data = {
         fecha: this.dateFormated,
+        interrumpt_other_process:this.interrumpt_other_process
       };
       axios
         .post(`/descomprimir`, data)

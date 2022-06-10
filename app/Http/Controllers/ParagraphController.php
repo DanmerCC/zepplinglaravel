@@ -14,6 +14,18 @@ use Illuminate\Http\Request;
 class ParagraphController extends Controller
 {
     function descomprimir(DescromprimirRequest $request){
+        if($request->get('interrumpt_other_process')=='true'){
+            $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
+            $processNoIncluided = Process::where('status','=','STARTED')->get();
+
+            $processNoIncluided->each(function(Process $item){
+                $item->status = 'ENDED';
+                $item->out_descompress = $item->out_descompress."\n Cancelado por al iniciar otra descompresion";
+                $item->save();
+                return $item;
+            });
+            $result = $obj->paragraph()->stopParagraph(env('ZEPLLING_BOOK1_ID'), env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'));
+        }
         $process = new Process();
         $process->status = 'STARTED';
         $process->save();
@@ -61,9 +73,20 @@ class ParagraphController extends Controller
         if($result->status == 'OK'){
             $process = Process::find($request->id);
             $process->status = 'ENDED';
-            $process->out_descompress = 'Cancelado por el usuario';
+            $process->out_descompress = $process->out_descompress.'Cancelado por el usuario';
             $process->save();
         }
+
+        $processNoIncluided = Process::where('status','=','STARTED')->get();
+
+        $processNoIncluided->each(function(Process $item){
+            $item->status = 'ENDED';
+            $item->out_descompress = $item->out_descompress."\n Cancelado por el usuario";
+            $item->save();
+            return $item;
+        });
+
+        Process::query()->where('status','=','STARTED')->update(['status'=>'ENDED']);
         return $result;
     }
 
