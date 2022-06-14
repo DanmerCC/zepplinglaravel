@@ -227,7 +227,14 @@ only showing top 20 rows
             console.log(Object.keys(response.data))
             const regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/,'g');
             for (const key in response.data) {
-                response.data[key]['comments'] = regexp.exec(response.data[key].text)
+                let resultRegex = regexp.exec(response.data[key].text)
+                if(resultRegex!=null){
+
+                    response.data[key]['comments'] = regexp.exec(response.data[key].text)
+                }else{
+                    response.data[key]['comments'] = []
+                }
+
             }
             this.parrafos = response.data
         })

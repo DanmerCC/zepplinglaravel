@@ -28,7 +28,8 @@
 
                 @else
                 <div class="end d-flex align-items-end flex-column">
-                    <a href="/logout">Salir</a>
+                    <a href="/logout">
+                        <button class="btn btn-light">Salir</button></a>
                 </div>
 
                 @endguest
