@@ -13,6 +13,10 @@
         body {
             background-image: 'assets/wave2.png' no-repeat
         }
+        .end {
+            width: 75%;
+            justify-items: end
+        }
     </style>
 	<body>
         <br>
@@ -20,6 +24,14 @@
                 <div class="logo">
                     <img src="/assets/logo.png">
                 </div>
+                @guest
+
+                @else
+                <div class="end d-flex align-items-end flex-column">
+                    <a href="/logout">Salir</a>
+                </div>
+
+                @endguest
            </div>
             <div id="app">
                 <view-jobs></view-jobs>
