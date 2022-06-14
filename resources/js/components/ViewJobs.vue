@@ -79,12 +79,13 @@ cuando finalice se le enviara un correo electronico.</small>
                         {{ index }}
                     </label>
                     <input :name="'input_'+index" :id="'input_'+index" class="form-control" type="text" v-model="modalParrafo.settings.params[index]">
-                     <small id="emailHelp" class="form-text text-muted">{{paragraphLowInfo}}</small>
+
                 </div>
                 <div class="col-12" v-if="Object.keys(modalParrafo.settings.params) == 0">
                     <h4>No son necesarios datos de entrada</h4>
                 </div>
             </div>
+            <small id="emailHelp" v-if="modalParrafo.comments.length>0" class="form-text text-muted">{{ modalParrafo.comments.join("\n")}}</small>
             <div class="row " v-if="verHistorial">
                 <div class="container" >
                     <div class="text-bordered text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
@@ -223,6 +224,11 @@ only showing top 20 rows
         let data = {}
         axios.get(`/paragraphs`,data)
         .then((response)=>{
+            console.log(Object.keys(response.data))
+            const regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/,'g');
+            for (const key in response.data) {
+                response.data[key]['comments'] = regexp.exec(response.data[key].text)
+            }
             this.parrafos = response.data
         })
         .catch(error=>console.error(error))

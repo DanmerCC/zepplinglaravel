@@ -8286,6 +8286,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8384,6 +8385,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var data = {};
       axios.get("/paragraphs", data).then(function (response) {
+        console.log(Object.keys(response.data));
+        var regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/, 'g');
+
+        for (var key in response.data) {
+          response.data[key]['comments'] = regexp.exec(response.data[key].text);
+        }
+
         _this4.parrafos = response.data;
       })["catch"](function (error) {
         return console.error(error);
@@ -31961,15 +31969,6 @@ var render = function () {
                                       },
                                     },
                                   }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "small",
-                                    {
-                                      staticClass: "form-text text-muted",
-                                      attrs: { id: "emailHelp" },
-                                    },
-                                    [_vm._v(_vm._s(_vm.paragraphLowInfo))]
-                                  ),
                                 ])
                               }
                             ),
@@ -31986,6 +31985,21 @@ var render = function () {
                           ],
                           2
                         ),
+                        _vm._v(" "),
+                        _vm.modalParrafo.comments.length > 0
+                          ? _c(
+                              "small",
+                              {
+                                staticClass: "form-text text-muted",
+                                attrs: { id: "emailHelp" },
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.modalParrafo.comments.join("\n"))
+                                ),
+                              ]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _vm.verHistorial
                           ? _c("div", { staticClass: "row " }, [
@@ -32089,7 +32103,7 @@ var render = function () {
               ],
               null,
               false,
-              2481933977
+              127997169
             ),
           })
         : _vm._e(),

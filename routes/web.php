@@ -44,7 +44,7 @@ Route::get('/test', function () {
                 "fecha"=>"lograste!!"
             ]
     ]);
-    dd($result);
+    dd(\bcrypt("99034268"));
     return view('welcome');
 });
 
