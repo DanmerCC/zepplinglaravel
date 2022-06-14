@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ParagraphController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('wombase');
-});
+})->middleware('auth')->name('base');
 
 
 Route::post('descomprimir',[ParagraphController::class,'descomprimir']);
@@ -37,15 +38,9 @@ Route::get('/zepplingtst', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    $obj = new ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
-    $result = $obj->paragraph()->runParagraphSync('2H3HB7613','paragraph_1654041145659_1836033409',[
-            "params"=>[
-                "fecha"=>"lograste!!"
-            ]
-    ]);
-    dd(\bcrypt("99034268"));
-    return view('welcome');
+Route::get('logout',function(){
+    Auth::logout();
+    return redirect('/');
 });
 
 Auth::routes();
