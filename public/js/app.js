@@ -8385,13 +8385,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var data = {};
       axios.get("/paragraphs", data).then(function (response) {
-        var regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/, 'g');
-
         for (var key in response.data) {
+          var regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/, 'g');
           var resultRegex = regexp.exec(response.data[key].text);
 
           if (resultRegex != null) {
-            response.data[key]['comments'] = regexp.exec(response.data[key].text);
+            response.data[key]['comments'] = resultRegex;
           } else {
             response.data[key]['comments'] = [];
           }

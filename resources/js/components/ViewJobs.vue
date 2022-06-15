@@ -224,12 +224,12 @@ only showing top 20 rows
         let data = {}
         axios.get(`/paragraphs`,data)
         .then((response)=>{
-            const regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/,'g');
             for (const key in response.data) {
-                let resultRegex = regexp.exec(response.data[key].text)
+                const regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/,'g');
+                var resultRegex = regexp.exec(response.data[key].text)
                 if(resultRegex!=null){
 
-                    response.data[key]['comments'] = regexp.exec(response.data[key].text)
+                    response.data[key]['comments'] = resultRegex
                 }else{
                     response.data[key]['comments'] = []
                 }
