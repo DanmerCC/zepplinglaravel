@@ -8390,7 +8390,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var resultRegex = regexp.exec(response.data[key].text);
 
           if (resultRegex != null) {
-            response.data[key]['comments'] = resultRegex;
+            var uniqlist = Array.from(new Set(resultRegex));
+            response.data[key]['comments'] = uniqlist;
           } else {
             response.data[key]['comments'] = [];
           }

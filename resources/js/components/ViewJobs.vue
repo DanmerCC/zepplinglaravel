@@ -228,8 +228,8 @@ only showing top 20 rows
                 const regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/,'g');
                 var resultRegex = regexp.exec(response.data[key].text)
                 if(resultRegex!=null){
-
-                    response.data[key]['comments'] = resultRegex
+                    const uniqlist = Array.from(new Set(resultRegex));
+                    response.data[key]['comments'] = uniqlist
                 }else{
                     response.data[key]['comments'] = []
                 }
