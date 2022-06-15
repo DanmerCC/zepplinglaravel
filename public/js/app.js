@@ -8385,7 +8385,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var data = {};
       axios.get("/paragraphs", data).then(function (response) {
-        console.log(Object.keys(response.data));
         var regexp = new RegExp(/(?<=\#comentario:')(.*)(?=')/, 'g');
 
         for (var key in response.data) {
@@ -8398,6 +8397,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
 
+        console.log(response.data);
         _this4.parrafos = response.data;
       })["catch"](function (error) {
         return console.error(error);
