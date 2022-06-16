@@ -12,12 +12,17 @@ class Process extends Model
 
     protected  $fillable = [
         'status',
-        'out_descompress'
+        'out_descompress',
+        'date_descompress'
     ];
 
     protected $appends =['out_casted'];
 
     protected $with = ['results'];
+
+    protected $casts = [
+        'date_descompress'=>'date:Y-m-d'
+    ];
 
     function getOutCastedAttribute(){
 

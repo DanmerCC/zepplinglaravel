@@ -28,6 +28,7 @@ class ParagraphController extends Controller
         }
         $process = new Process();
         $process->status = 'STARTED';
+        $process->date_descompress = str_replace("_","-",$request->get("fecha"));
         $process->save();
         $fecha = $request->get('fecha');
         dispatch(new ParagraphJob($fecha,$process));

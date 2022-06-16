@@ -8287,6 +8287,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -31660,6 +31661,11 @@ var render = function () {
                 fn: function (ref) {
                   var row = ref.row
                   return [
+                    _vm._v(
+                      "\n        " +
+                        _vm._s(row.date_descompress) +
+                        "\n            "
+                    ),
                     row.status == "STARTED"
                       ? _c("div", [
                           _c(

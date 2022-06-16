@@ -6,6 +6,7 @@
     <div class="row">
       <data-table :columns="columns" :items="process">
         <template #descompresion="{row}">
+        {{ row.date_descompress }}
             <div v-if="row.status == 'STARTED'">
             <button class="btn btn-secundary" @click="showOptionsInprocess = row">
                 ...CARGANDO

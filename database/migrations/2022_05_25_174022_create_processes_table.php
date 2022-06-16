@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('status',['STARTED','FAIL','ENDED'])->default('STARTED');
             $table->text('out_descompress')->nullable();
+            $table->date('date_descompress')->nullable();
             $table->timestamps();
         });
     }
