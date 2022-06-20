@@ -32017,7 +32017,10 @@ var render = function () {
                           ? _c("div", { staticClass: "row " }, [
                               _c(
                                 "div",
-                                { staticClass: "container" },
+                                {
+                                  staticClass: "container",
+                                  staticStyle: { "overflow-x": "scroll" },
+                                },
                                 _vm._l(
                                   _vm.getHistoryByParagraph(
                                     _vm.modalParrafo.id,
@@ -32027,6 +32030,7 @@ var render = function () {
                                     return _c("div", {
                                       staticClass:
                                         "text-bordered text plainTextContainer",
+                                      staticStyle: { "min-width": "1600px" },
                                       domProps: { innerHTML: _vm._s(result) },
                                     })
                                   }
@@ -32094,7 +32098,15 @@ var render = function () {
                           "button",
                           {
                             staticClass: "btn btn-womprimary",
-                            attrs: { disabled: !_vm.modalParrafo.editable },
+                            attrs: {
+                              disabled:
+                                !_vm.modalParrafo.editable &&
+                                !(
+                                  Object.keys(
+                                    _vm.modalParrafo.settings.params
+                                  ) == 0
+                                ),
+                            },
                             on: {
                               click: function ($event) {
                                 return _vm.viewParrafoResult(
@@ -32115,7 +32127,7 @@ var render = function () {
               ],
               null,
               false,
-              127997169
+              1819676446
             ),
           })
         : _vm._e(),

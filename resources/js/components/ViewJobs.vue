@@ -88,8 +88,8 @@ cuando finalice se le enviara un correo electronico.</small>
             </div>
             <small id="emailHelp" v-if="modalParrafo.comments.length>0" class="form-text text-muted">{{ modalParrafo.comments.join("\n")}}</small>
             <div class="row " v-if="verHistorial">
-                <div class="container" >
-                    <div class="text-bordered text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
+                <div class="container" style="overflow-x:scroll">
+                    <div style="min-width:1600px" class="text-bordered text plainTextContainer" v-for="result in getHistoryByParagraph(modalParrafo.id,modalParrafo.process_id)" v-html="result"></div>
                 </div>
             </div>
             <div v-else>
@@ -107,7 +107,7 @@ cuando finalice se le enviara un correo electronico.</small>
         </template>
         <template #footer>
             <div>
-            <button :disabled="!modalParrafo.editable" class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
+            <button :disabled="!modalParrafo.editable && !(Object.keys(modalParrafo.settings.params) == 0)" class="btn btn-womprimary" @click="viewParrafoResult(modalParrafo,modalParrafo.settings.params,modalParrafo.process_id)">Enviar</button>
             </div>
         </template>
     </modal-component>
