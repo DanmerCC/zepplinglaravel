@@ -101,8 +101,8 @@ cuando finalice se le enviara un correo electronico.</small>
                 </small>
             </button>
         </div>
-            <div class="container" v-if="resultadoParagrafoStandar!='' && resultadoParagrafoStandar!=null">
-                <div class="text plainTextContainer">{{ resultadoParagrafoStandar }}</div>
+            <div class="container" style="overflow-x:scroll" v-if="resultadoParagrafoStandar!='' && resultadoParagrafoStandar!=null">
+                <div  style="min-width:1600px" class="text plainTextContainer">{{ resultadoParagrafoStandar }}</div>
             </div>
         </template>
         <template #footer>

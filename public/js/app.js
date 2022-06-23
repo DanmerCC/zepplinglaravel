@@ -32077,13 +32077,23 @@ var render = function () {
                       _vm._v(" "),
                       _vm.resultadoParagrafoStandar != "" &&
                       _vm.resultadoParagrafoStandar != null
-                        ? _c("div", { staticClass: "container" }, [
-                            _c(
-                              "div",
-                              { staticClass: "text plainTextContainer" },
-                              [_vm._v(_vm._s(_vm.resultadoParagrafoStandar))]
-                            ),
-                          ])
+                        ? _c(
+                            "div",
+                            {
+                              staticClass: "container",
+                              staticStyle: { "overflow-x": "scroll" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "text plainTextContainer",
+                                  staticStyle: { "min-width": "1600px" },
+                                },
+                                [_vm._v(_vm._s(_vm.resultadoParagrafoStandar))]
+                              ),
+                            ]
+                          )
                         : _vm._e(),
                     ]
                   },
@@ -32127,7 +32137,7 @@ var render = function () {
               ],
               null,
               false,
-              1819676446
+              2346600116
             ),
           })
         : _vm._e(),
