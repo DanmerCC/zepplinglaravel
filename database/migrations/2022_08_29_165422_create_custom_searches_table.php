@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('processes', function (Blueprint $table) {
+        Schema::create('custom_searches', function (Blueprint $table) {
             $table->id();
-            $table->enum('status',['STARTED','FAIL','ENDED'])->default('STARTED');
-            $table->text('out_descompress')->nullable();
-            $table->date('date_descompress')->nullable();
-            $table->string('ip')->nullable();
+            $table->date('day');
+            $table->string('hour');
+            $table->text('output')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('processes');
+        Schema::dropIfExists('custom_searches');
     }
 };

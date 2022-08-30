@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CustomSearchController;
 use App\Http\Controllers\ParagraphController;
+use App\Jobs\RunNewCustomSearchJob;
+use App\Models\CustomSearch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,34 +23,30 @@ Route::get('/', function () {
 })->middleware('auth')->name('base');
 
 
-Route::post('descomprimir',[ParagraphController::class,'descomprimir']);
-Route::get('process',[ParagraphController::class,'process']);
-Route::post('parrafostandar/{index}',[ParagraphController::class,'paragrafo']);
-Route::get('paragraphs',[ParagraphController::class,'paragraphs']);
-Route::post('stop/decompres',[ParagraphController::class,'stopDecompres']);
+Route::post('descomprimir', [ParagraphController::class, 'descomprimir']);
+Route::get('process', [ParagraphController::class, 'process']);
+Route::post('parrafostandar/{index}', [ParagraphController::class, 'paragrafo']);
+Route::get('paragraphs', [ParagraphController::class, 'paragraphs']);
+Route::post('stop/decompres', [ParagraphController::class, 'stopDecompres']);
+Route::post('custom/create', [CustomSearchController::class, 'new']);
+Route::get('custom/index', [CustomSearchController::class, 'index']);
 Route::get('/zepplingtst', function () {
-    /*$obj = new ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
-    $result = $obj->paragraph()->runParagraphSync('2H5MVKKF1','20220522-173128_2133226449',[
-            "params"=>[
-                "date"=>"lograste!!"
-            ]
-    ]);
-    //dd($result);
-    //dd($result);
-    dd(explode("\n",$result->body->msg[0]->data));*/
-    return view('welcome');
+
+    return view('customsearch');
 });
 
-Route::get('logout',function(){
+
+Route::get('test', function () {
+    $customSearch =  CustomSearch::create(['day' => '2022-01-01', 'hour' => '11']);
+    $job = new RunNewCustomSearchJob($customSearch);
+    dispatch($job);
+    return "trabajo agregado";
+});
+Route::get('logout', function () {
     Auth::logout();
     return redirect('/');
 });
 
-
-Route::get('test',function(){
-
-    dd(__("auth.Email Address"));
-});
 
 Auth::routes();
 

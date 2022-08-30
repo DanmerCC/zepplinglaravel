@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DescromprimirRequest;
 use App\Http\Requests\RunParagrafoRequest;
+use App\Jobs\DescromprimirJob;
 use App\Jobs\ParagraphJob;
 use App\Models\PharagraphResult;
 use App\Models\Process;
@@ -14,24 +15,12 @@ use Illuminate\Http\Request;
 class ParagraphController extends Controller
 {
     function descomprimir(DescromprimirRequest $request){
-        if($request->get('interrumpt_other_process')=='true'){
-            $obj = new \ZeppelinAPI\Zeppelin(['baseUrl' => env('ZEPLLING_HOST')]);
-            $processNoIncluided = Process::where('status','=','STARTED')->get();
 
-            $processNoIncluided->each(function(Process $item){
-                $item->status = 'ENDED';
-                $item->out_descompress = $item->out_descompress."\n Cancelado por al iniciar otra descompresion";
-                $item->save();
-                return $item;
-            });
-            $result = $obj->paragraph()->stopParagraph(env('ZEPLLING_BOOK1_ID'), env('ZEPLLING_PARAGRAPHO_DESCOMPRESS_IDL'));
-        }
         $process = new Process();
-        $process->status = 'STARTED';
-        $process->date_descompress = str_replace("_","-",$request->get("fecha"));
+        $process->date_descompress = $request->fecha;
         $process->save();
-        $fecha = $request->get('fecha');
-        dispatch(new ParagraphJob($fecha,$process));
+
+        dispatch(new DescromprimirJob($process));
 
         return "trabajo agregado";
     }
