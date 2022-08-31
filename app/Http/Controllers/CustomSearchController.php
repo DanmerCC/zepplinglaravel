@@ -36,7 +36,7 @@ class CustomSearchController extends Controller
     function detailIndex(Request $request)
     {
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
-        $queryBase = DB::table($cgnatTable);
+        $queryBase = DB::connection('mysql_dfs')->table($cgnatTable);
 
         if($request->has('Hora')){
             $queryBase->where("Hora","=",$request->get('Hora').":");
