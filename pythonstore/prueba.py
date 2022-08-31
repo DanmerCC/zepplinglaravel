@@ -2,7 +2,7 @@ import sys
 from time import sleep
 
 
-for i in range(120):
+for i in range(30):
 
     print(i)
     sleep(1)

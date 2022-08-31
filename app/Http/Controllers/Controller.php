@@ -18,6 +18,6 @@ class Controller extends BaseController
 
     protected function sendError($message, $code)
     {
-        return response()->json(['success' => false, 'message' => $message, 'code' => $code]);
+        return response()->json(['success' => false, 'message' => $message, 'code' => $code], $code);
     }
 }

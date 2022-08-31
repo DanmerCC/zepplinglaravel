@@ -10,11 +10,17 @@ class CustomSearch extends Model
     use HasFactory;
 
     protected $fillable = [
+        'ip_publica',
         'hour',
         'day',
         'output',
-        'pid'
+        'pid',
+        'state'
     ];
 
     protected $casts = ['day' => 'date'];
+
+    function updateState()
+    {
+    }
 }

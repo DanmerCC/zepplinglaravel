@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('hour');
             $table->string('pid')->nullable();
             $table->text('output')->nullable();
+            $table->string('ip_publica');
+            $table->enum('state', ['STARTED', 'FAILED', 'REDEADBLE', 'ENDED']);
             $table->timestamps();
         });
     }

@@ -8169,6 +8169,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      search: null,
+      new_ip: null,
       hour: null,
       columns: [{
         name: "CLiente",
@@ -8380,11 +8382,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      new_ip_publica: null,
       search: null,
       new_ip: null,
       moment: (moment__WEBPACK_IMPORTED_MODULE_1___default()),
@@ -8421,6 +8438,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/custom/create", {
+        ip_publica: this.new_ip_publica,
         day: this.new_date,
         hour: this.new_hora
       }).then(function (response) {
@@ -8432,6 +8450,12 @@ __webpack_require__.r(__webpack_exports__);
           _this2.getSearchView();
         }
       })["catch"](function (error) {
+        console.error(error.response);
+
+        if (error.response.status == 503) {
+          alert("Error: " + error.response.data.message);
+        }
+
         console.error(error);
       });
     }
@@ -54092,10 +54116,14 @@ var render = function () {
                 },
                 {
                   key: "textarea",
-                  fn: function () {
-                    return [_c("detail-custom-search")]
+                  fn: function (ref) {
+                    var row = ref.row
+                    return [
+                      _c("detail-custom-search", {
+                        attrs: { process_id: row.id },
+                      }),
+                    ]
                   },
-                  proxy: true,
                 },
               ]),
             }),
@@ -54119,6 +54147,32 @@ var render = function () {
                   fn: function () {
                     return [
                       _c("div", { staticClass: "container" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-12" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.new_ip_publica,
+                                  expression: "new_ip_publica",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", name: "", id: "" },
+                              domProps: { value: _vm.new_ip_publica },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.new_ip_publica = $event.target.value
+                                },
+                              },
+                            }),
+                          ]),
+                        ]),
+                        _vm._v(" "),
                         _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-6" }, [
                             _c("input", {
@@ -54181,7 +54235,7 @@ var render = function () {
                               _vm._l(_vm.option_hora, function (option, index) {
                                 return _c(
                                   "option",
-                                  { domProps: { value: option } },
+                                  { key: index, domProps: { value: option } },
                                   [
                                     _vm._v(
                                       "\n                                " +
@@ -54274,7 +54328,7 @@ var render = function () {
               ],
               null,
               false,
-              3583547713
+              2117248867
             ),
           })
         : _vm._e(),

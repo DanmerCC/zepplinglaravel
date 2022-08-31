@@ -12,11 +12,13 @@
                     :columns="columns"
                     :items="process"
                 >
-                    <template #day="{ row }">
+                    <template #day="{row}">
                         {{ moment(row.day).format("YYYY-MM-DD") }}
                     </template>
-                    <template #textarea>
-                        <detail-custom-search></detail-custom-search>
+                    <template #textarea="{row}">
+                        <detail-custom-search
+                            :process_id="row.id"
+                        ></detail-custom-search>
                     </template>
                 </data-table>
             </div>
@@ -28,6 +30,17 @@
         >
             <template #body>
                 <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <input
+                                class="form-control"
+                                type="text"
+                                name=""
+                                id=""
+                                v-model="new_ip_publica"
+                            />
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <input
@@ -48,6 +61,7 @@
                                 <option
                                     v-for="(option, index) in option_hora"
                                     :value="option"
+                                    :key="index"
                                 >
                                     {{ option }}
                                 </option>
@@ -82,6 +96,7 @@ import moment from "moment";
 export default {
     data() {
         return {
+            new_ip_publica: null,
             search: null,
             new_ip: null,
             moment,
@@ -137,6 +152,7 @@ export default {
         prepareData() {
             axios
                 .post(`/custom/create`, {
+                    ip_publica: this.new_ip_publica,
                     day: this.new_date,
                     hour: this.new_hora,
                 })
@@ -148,6 +164,10 @@ export default {
                     }
                 })
                 .catch((error) => {
+                    console.error(error.response);
+                    if (error.response.status == 503) {
+                        alert("Error: " + error.response.data.message);
+                    }
                     console.error(error);
                 });
         },

@@ -38,6 +38,9 @@ Route::get('/zepplingtst', function () {
 
 
 Route::get('test', function () {
+    $last = CustomSearch::orderBy('id', 'ASC')->first();
+
+    dd(CustomSearch::orderBy('id', 'ASC')->first()->toArray());
     $customSearch =  CustomSearch::create(['day' => '2022-01-01', 'hour' => '11']);
     $job = new RunNewCustomSearchJob($customSearch);
     dispatch($job);

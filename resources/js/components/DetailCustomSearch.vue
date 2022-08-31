@@ -44,6 +44,8 @@ export default {
     },
     data() {
         return {
+            search: null,
+            new_ip: null,
             hour: null,
             columns: [
                 { name: "CLiente", value: "nombre_cliente" },

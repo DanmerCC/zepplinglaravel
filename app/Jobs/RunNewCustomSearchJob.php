@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Core\States;
 use App\Models\CustomSearch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -34,10 +35,12 @@ class RunNewCustomSearchJob implements ShouldQueue
      */
     public function handle()
     {
-        $command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
+        //$command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
+        $command = "python3 pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d'));
         exec($command, $output);
 
         $this->search->output = implode(",", $output);
+        $this->search->state = States::ENDED;
         $this->search->save();
     }
 }
