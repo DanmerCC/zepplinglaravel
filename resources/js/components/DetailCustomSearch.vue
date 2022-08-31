@@ -3,19 +3,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <input
-                        class="form-control"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Ip publica"
-                        v-model="new_ip"
-                    />
+                    Filtrar Minuto
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-3">
-                    <hour-selector v-model="hour"></hour-selector>
+                    <minute-selector v-model="minute"></minute-selector>
                 </div>
                 <div class="col-6">
                     <input
@@ -30,7 +21,14 @@
                 <div class="col-3"></div>
             </div>
         </div>
-        <data-table :columns="columns" :items="data"></data-table>
+        <data-table :inload="inload" :columns="columns" :items="data"></data-table>
+        <div class="row" v-if="page_info !=null">
+            <div class="col-12">
+                <button class="btn btn-sm btn-primary"> {{page_info.current_page}}</button>
+                ...
+                <button class="btn btn-sm btn-secondary"> {{page_info.last_page}}</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -44,27 +42,44 @@ export default {
     },
     data() {
         return {
+            inload:false,
+            page_info:{
+                current_page: 1,
+            },
             search: null,
             new_ip: null,
-            hour: null,
+            minute: null,
             columns: [
-                { name: "CLiente", value: "nombre_cliente" },
-                { name: "Hora", value: "Hora" },
-                { name: "Imsi", value: "imsi" },
-                { name: "Ip privada", value: "SourceIP" },
+                { name: "SourceIP", value: "SourceIP" },
+                { name: "DestinationIP", value: "DestinationIP" },
+                { name: "SourceNatIP", value: "SourceNatIP" },
             ],
             data: [],
         };
     },
     methods: {
         getDetails() {
+            this.inload = true;
             axios
-                .get(`/custom/detail/index/${this.process_id}`)
+                .get(`/custom/detail/index`,{params:{
+                    page:this.page_info.current_page,
+                    Minute:this.minute
+                }})
                 .then(({ data }) => {
-                    this.data = data.data;
+                    this.inload = false;
+                    this.data = data.data.data;
+                    this.page_info = {
+                        current_page:data.data.current_page,
+                        last_page:data.data.last_page,
+                    };
                 })
                 .catch(console.error);
         },
+    },
+    watch: {
+        minute(newValue, oldValue) {
+            this.getDetails()
+        }
     },
     mounted() {
         this.getDetails();
@@ -73,9 +88,5 @@ export default {
 </script>
 
 <style scoped>
-::v-deep tr:first-child,
-th:first-child {
-    width: 10% !important;
-    border: black 1px solid;
-}
+
 </style>

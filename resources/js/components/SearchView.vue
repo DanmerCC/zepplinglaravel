@@ -7,7 +7,24 @@
         </div>
         <div class="row">
             <div class="col-12">
+                <div v-if="last!=null" class="card" style="width: 100%;">
+                    <!--<img src="#" class="card-img-top" alt="...">-->
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ moment(last.day).format("YYYY-MM-DD") }}</h5>
+                        <detail-custom-search
+                                :process_id="last.id"
+                            >
+                        </detail-custom-search>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 <data-table
+                data-table-id="table-id"
+                v-if="false"
                     class="principal_datatable"
                     :columns="columns"
                     :items="process"
@@ -16,9 +33,18 @@
                         {{ moment(row.day).format("YYYY-MM-DD") }}
                     </template>
                     <template #textarea="{row}">
+                        <input
+                            class="form-control"
+                            type="text"
+                            name=""
+                            id=""
+                            placeholder="Ip publica"
+                            v-model="row.ip_publica"
+                        />
                         <detail-custom-search
                             :process_id="row.id"
-                        ></detail-custom-search>
+                        >
+                    </detail-custom-search>
                     </template>
                 </data-table>
             </div>
@@ -96,6 +122,7 @@ import moment from "moment";
 export default {
     data() {
         return {
+            last:null,
             new_ip_publica: null,
             search: null,
             new_ip: null,
@@ -140,12 +167,23 @@ export default {
         };
     },
     methods: {
+
+        getLastSearch(){
+            axios.get(`custom/last`).then((result) => {
+                this.last = result.data.data.data;
+            }).catch((err) => {
+                console.error(err);
+            });
+        },
         getSearchView() {
             axios
                 .get(`/custom/index`)
                 .then((response) => {
                     console.log(response.data.data.data);
                     this.process = response.data.data.data;
+                    if(this.process.length > 0) {
+                        this.last = this.process[this.process.length - 1];
+                    }
                 })
                 .catch(console.error);
         },
