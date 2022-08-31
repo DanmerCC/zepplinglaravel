@@ -30,6 +30,7 @@ Route::get('paragraphs', [ParagraphController::class, 'paragraphs']);
 Route::post('stop/decompres', [ParagraphController::class, 'stopDecompres']);
 Route::post('custom/create', [CustomSearchController::class, 'new']);
 Route::get('custom/index', [CustomSearchController::class, 'index']);
+Route::get('custom/detail/index/{id}', [CustomSearchController::class, 'detailIndex']);
 Route::get('/zepplingtst', function () {
 
     return view('customsearch');

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@danmerccoscco/personal": "^2.5.40",
-        "autoprefixer": "10.4.5"
+        "autoprefixer": "10.4.5",
+        "moment": "^2.29.4"
     }
 }

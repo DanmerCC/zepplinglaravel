@@ -12,7 +12,8 @@ class CustomSearch extends Model
     protected $fillable = [
         'hour',
         'day',
-        'output'
+        'output',
+        'pid'
     ];
 
     protected $casts = ['day' => 'date'];

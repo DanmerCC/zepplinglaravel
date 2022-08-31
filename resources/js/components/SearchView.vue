@@ -7,7 +7,14 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <data-table :columns="columns" :items="process">
+                <data-table
+                    class="principal_datatable"
+                    :columns="columns"
+                    :items="process"
+                >
+                    <template #day="{ row }">
+                        {{ moment(row.day).format("YYYY-MM-DD") }}
+                    </template>
                     <template #textarea>
                         <detail-custom-search></detail-custom-search>
                     </template>
@@ -71,17 +78,20 @@
 
 <script>
 import axios from "axios";
-
+import moment from "moment";
 export default {
     data() {
         return {
+            search: null,
+            new_ip: null,
+            moment,
             columns: [
                 { name: "Fecha", value: "day" },
                 { name: "Horas", value: "hour" },
                 { name: "Horas", value: "textarea" },
             ],
             process: [],
-            new_date: null,
+            new_date: new Date(),
             newQuery: null,
             new_cancel: true,
             new_hora: "13",
@@ -132,6 +142,10 @@ export default {
                 })
                 .then((response) => {
                     console.log(response.data.data);
+                    if (response.data.success) {
+                        this.newQuery = null;
+                        this.getSearchView();
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -150,5 +164,14 @@ export default {
     background-color: #612d8a !important;
     color: white !important;
     border-color: #9d6fc1 !important;
+}
+
+::v-deep td:nth-child(-n + 2),
+th:nth-child(-n + 2) {
+    width: 10% !important;
+}
+
+::v-deep tbody.table.table-responsive-sm.table-sm tr {
+    height: 1000px;
 }
 </style>

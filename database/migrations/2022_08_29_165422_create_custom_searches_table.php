@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->date('day');
             $table->string('hour');
+            $table->string('pid')->nullable();
             $table->text('output')->nullable();
             $table->timestamps();
         });

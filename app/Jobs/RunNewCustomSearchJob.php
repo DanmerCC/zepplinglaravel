@@ -34,7 +34,7 @@ class RunNewCustomSearchJob implements ShouldQueue
      */
     public function handle()
     {
-        $command = "python3 pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d'));
+        $command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
         exec($command, $output);
 
         $this->search->output = implode(",", $output);
