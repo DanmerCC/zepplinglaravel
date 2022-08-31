@@ -35,8 +35,14 @@ class CustomSearchController extends Controller
 
     function detailIndex(Request $request)
     {
+        /**select  cgnat.Hora as cgnat_hora ,cgnat.Min as cgnat_minunto,cem.* from prueba.df_cgnat_SourceNatIP_Dest_file cgnat join prueba.df_joined cem on cgnat.SourceIP = cem.SourceIP where cem.nombre_cliente like "%Salazar Quiceno" and cgnat.Hora='11:';*/
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
-        $queryBase = DB::connection('mysql_dfs')->table($cgnatTable);
+        $userdata = "df_joined";
+        $queryBase = DB::connection('mysql_dfs')
+        ->table($cgnatTable)
+        ->select('cgnat.Hora','cgnat.Min',$userdata.'.*')
+        ->join($userdata,$cgnatTable.".SourceIP","=",$userdata.".SourceIP","inner")
+        ;
 
         if($request->has('Hora')){
             $queryBase->where("Hora","=",$request->get('Hora').":");
