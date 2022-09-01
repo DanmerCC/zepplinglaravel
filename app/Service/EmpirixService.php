@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class EmpirixService {
 
+    protected $baseurl = "https://klerity.internalwom.com/";
     protected $username;
     protected $password;
 
@@ -13,6 +14,7 @@ class EmpirixService {
         $this->username = $username;
         $this->password = $password;
     }
+
     static public function getCoordenadas($params){
         return  "https://www.google.com/maps/@-12.1801335,-76.9782796,15z";
     }
