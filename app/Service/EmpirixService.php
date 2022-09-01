@@ -19,11 +19,11 @@ class EmpirixService {
         return  "https://www.google.com/maps/@-12.1801335,-76.9782796,15z";
     }
 
-    function getToken($username, $password)
+    function getToken()
     {
         $result = Http::withoutVerifying()->withHeaders([
-            'X-OpenAM-Username' => $username,
-            'X-OpenAM-Password' => $password
+            'X-OpenAM-Username' => $this->username,
+            'X-OpenAM-Password' => $this->password
         ])->post($this->baseurl . '/openam/json/authenticate', []);
 
         return $result->tokenId;

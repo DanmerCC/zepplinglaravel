@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomSearchController;
 use App\Http\Controllers\ParagraphController;
 use App\Jobs\RunNewCustomSearchJob;
 use App\Models\CustomSearch;
+use App\Service\EmpirixService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,13 @@ Route::get('/zepplingtst', function () {
     return view('customsearch');
 });
 
+
+Route::get('test2', function () {
+    $service = new EmpirixService(env('EMPIRIX_USER'), env('EMPIRIX_PASSWORD'));
+    dd($service->getToken());
+
+    return "trabajo agregado";
+});
 
 Route::get('test', function () {
     $last = CustomSearch::orderBy('id', 'ASC')->first();
