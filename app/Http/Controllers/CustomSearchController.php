@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\EmpirixService;
 use App\Core\State;
 use App\Core\States;
 use App\Http\Requests\NewCustomSearchRequest;
@@ -35,6 +36,37 @@ class CustomSearchController extends Controller
 
     function detailIndex(Request $request)
     {
+        /**
+         *
+         */
+        /*
+        "Hora": "11:",
+"Min": "01:32",
+"imsi": "732360022727835",
+"sequence": "912474090314449154",
+"start_time": "2022_06_28 13:24:59",
+"end_time": "2022_06_28 13:25:41",
+"msisdn": "573142179931",
+"imei": "867265035016147",
+"lac_tac": "ac1",
+"sac_eci": "345105",
+"ip_address_assigned": "10.73.234.54",
+"country_code": "732",
+"network_id": "360",
+"msisdn1": "3142179931",
+"nombre_cliente": "Hector Dionisio Martinez Malaver",
+"Tipo_de_cliente": "Persona Natural",
+"Tipo_de_Servicio": "Postpaid",
+"Dotacion": "NO",
+"Plan": "Plan XS 12_GB/ili_MIN/ili_SMS",
+"Ciudad_cliente": "Bucaramanga",
+"Genero": "Masculino",
+"Ending": "SI",
+"Rango_de_edad": "No Definido",
+"SourceIP": "10.73.234.54",
+"SourceNatIP": "179.19.21.84",
+"DestinationIP": "172.217.30.194"
+*/
         /**select  cgnat.Hora as cgnat_hora ,cgnat.Min as cgnat_minunto,cem.* from prueba.df_cgnat_SourceNatIP_Dest_file cgnat join prueba.df_joined cem on cgnat.SourceIP = cem.SourceIP where cem.nombre_cliente like "%Salazar Quiceno" and cgnat.Hora='11:';*/
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
@@ -79,7 +111,10 @@ class CustomSearchController extends Controller
 
         $command = "python3 ".env('SCRIPT_PATH')." " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . ' > ' . $newModel->id . '.log 2>&1 & echo $!; ';
         $pid = exec($command, $output);
-        //dispatch(new RunNewCustomSearchJob($newModel));
         return $this->sendResponse($pid, "Tarea agregada");
+    }
+
+    function getMapUrl(Request $request ){
+        return $this->sendResponse(EmpirixService::getCoordenadas($request),"Correctamente cargado");
     }
 }

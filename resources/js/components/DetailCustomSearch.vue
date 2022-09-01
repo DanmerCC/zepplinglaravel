@@ -21,7 +21,13 @@
                 <div class="col-3"></div>
             </div>
         </div>
-        <data-table :inload="inload" :columns="columns" :items="data"></data-table>
+        <data-table :inload="inload" :columns="columns" :items="data">
+            <template #opciones="{row}">
+                <button class="btn btn-info" @click="getOpenMap()">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                </button>
+            </template>
+        </data-table>
         <div class="row" v-if="page_info !=null">
             <div class="col-12">
                 <button class="btn btn-sm btn-primary"> {{page_info.current_page}}</button>
@@ -50,14 +56,39 @@ export default {
             new_ip: null,
             minute: null,
             columns: [
+                { name: " ", value: "opciones" },
                 { name: "SourceIP", value: "SourceIP" },
                 { name: "DestinationIP", value: "DestinationIP" },
-                { name: "SourceNatIP", value: "SourceNatIP" },
+                { name: "imsi", value: "imsi" },
+                { name: "sequence", value: "sequence" },
+                { name: "start_time", value: "start_time" },
+                { name: "end_time", value: "end_time" },
+                { name: "msisdn", value: "msisdn" },
+                { name: "imei", value: "imei" },
+                { name: "ip_address_assigned", value: "ip_address_assigned" },
+                { name: "country_code", value: "country_code" },
+                { name: "msisdn1", value: "msisdn1" },
+                { name: "nombre_cliente", value: "nombre_cliente" },
+                { name: "Tipo_de_cliente", value: "Tipo_de_cliente" },
+                { name: "Tipo_de_Servicio", value: "Tipo_de_Servicio" },
+                { name: "Dotacion", value: "Dotacion" },
+                { name: "Plan", value: "Plan" },
+                { name: "Ciudad_cliente", value: "Ciudad_cliente" },
+                { name: "Genero", value: "Genero" },
+                { name: "Ending", value: "Ending" },
+                { name: "Rango_de_edad", value: "Rango_de_edad" },
             ],
             data: [],
         };
     },
     methods: {
+        getOpenMap(map){
+            axios.get(`/custom/mapurl`).then((result) => {
+                window.open(result.data.data, '_blank',"menubar=1,resizable=1,width=650,height=650").focus();
+            }).catch((err) => {
+                console.error(err);
+            });
+        },
         getDetails() {
             this.inload = true;
             axios

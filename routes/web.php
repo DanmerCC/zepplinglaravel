@@ -31,6 +31,8 @@ Route::post('stop/decompres', [ParagraphController::class, 'stopDecompres']);
 Route::post('custom/create', [CustomSearchController::class, 'new']);
 Route::get('custom/index', [CustomSearchController::class, 'index']);
 Route::get('custom/detail/index', [CustomSearchController::class, 'detailIndex']);
+Route::get('custom/mapurl', [CustomSearchController::class, 'getMapUrl']);
+
 Route::get('/zepplingtst', function () {
 
     return view('customsearch');

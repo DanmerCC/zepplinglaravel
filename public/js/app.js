@@ -8158,6 +8158,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     process_id: {
@@ -8175,19 +8181,80 @@ __webpack_require__.r(__webpack_exports__);
       new_ip: null,
       minute: null,
       columns: [{
+        name: " ",
+        value: "opciones"
+      }, {
         name: "SourceIP",
         value: "SourceIP"
       }, {
         name: "DestinationIP",
         value: "DestinationIP"
       }, {
-        name: "SourceNatIP",
-        value: "SourceNatIP"
+        name: "imsi",
+        value: "imsi"
+      }, {
+        name: "sequence",
+        value: "sequence"
+      }, {
+        name: "start_time",
+        value: "start_time"
+      }, {
+        name: "end_time",
+        value: "end_time"
+      }, {
+        name: "msisdn",
+        value: "msisdn"
+      }, {
+        name: "imei",
+        value: "imei"
+      }, {
+        name: "ip_address_assigned",
+        value: "ip_address_assigned"
+      }, {
+        name: "country_code",
+        value: "country_code"
+      }, {
+        name: "msisdn1",
+        value: "msisdn1"
+      }, {
+        name: "nombre_cliente",
+        value: "nombre_cliente"
+      }, {
+        name: "Tipo_de_cliente",
+        value: "Tipo_de_cliente"
+      }, {
+        name: "Tipo_de_Servicio",
+        value: "Tipo_de_Servicio"
+      }, {
+        name: "Dotacion",
+        value: "Dotacion"
+      }, {
+        name: "Plan",
+        value: "Plan"
+      }, {
+        name: "Ciudad_cliente",
+        value: "Ciudad_cliente"
+      }, {
+        name: "Genero",
+        value: "Genero"
+      }, {
+        name: "Ending",
+        value: "Ending"
+      }, {
+        name: "Rango_de_edad",
+        value: "Rango_de_edad"
       }],
       data: []
     };
   },
   methods: {
+    getOpenMap: function getOpenMap(map) {
+      axios.get("/custom/mapurl").then(function (result) {
+        window.open(result.data.data, '_blank', "menubar=1,resizable=1,width=650,height=650").focus();
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
     getDetails: function getDetails() {
       var _this = this;
 
@@ -54019,6 +54086,33 @@ var render = function () {
       _vm._v(" "),
       _c("data-table", {
         attrs: { inload: _vm.inload, columns: _vm.columns, items: _vm.data },
+        scopedSlots: _vm._u([
+          {
+            key: "opciones",
+            fn: function (ref) {
+              var row = ref.row
+              return [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info",
+                    on: {
+                      click: function ($event) {
+                        return _vm.getOpenMap()
+                      },
+                    },
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-map-marker",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                  ]
+                ),
+              ]
+            },
+          },
+        ]),
       }),
       _vm._v(" "),
       _vm.page_info != null
