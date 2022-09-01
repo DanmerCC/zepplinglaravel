@@ -8,7 +8,7 @@
                 <div class="col-3">
                     <minute-selector v-model="minute"></minute-selector>
                 </div>
-                <div class="col-6">
+                <!--<div class="col-6">
                     <input
                         type="text"
                         placeholder="Buscar ..."
@@ -17,7 +17,7 @@
                         id=""
                         v-model="search"
                     />
-                </div>
+                </div>-->
                 <div class="col-3"></div>
             </div>
         </div>

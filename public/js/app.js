@@ -54051,35 +54051,6 @@ var render = function () {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-6" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search,
-                  expression: "search",
-                },
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                placeholder: "Buscar ...",
-                name: "",
-                id: "",
-              },
-              domProps: { value: _vm.search },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.search = $event.target.value
-                },
-              },
-            }),
-          ]),
-          _vm._v(" "),
           _c("div", { staticClass: "col-3" }),
         ]),
       ]),
