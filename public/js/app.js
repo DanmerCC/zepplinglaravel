@@ -8164,6 +8164,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     process_id: {
@@ -8441,7 +8442,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
-//
 //
 //
 //
@@ -54092,10 +54092,36 @@ var render = function () {
               _c("button", { staticClass: "btn btn-sm btn-primary" }, [
                 _vm._v(" " + _vm._s(_vm.page_info.current_page)),
               ]),
+              _vm._v(" "),
+              _vm.page_info.current_page != _vm.page_info.last_page - 1
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-secondary",
+                      on: {
+                        click: function ($event) {
+                          _vm.page_info.current_page++
+                          _vm.getDetails()
+                        },
+                      },
+                    },
+                    [_vm._v(" " + _vm._s(_vm.page_info.current_page + 1))]
+                  )
+                : _vm._e(),
               _vm._v("\n            ...\n            "),
-              _c("button", { staticClass: "btn btn-sm btn-secondary" }, [
-                _vm._v(" " + _vm._s(_vm.page_info.last_page)),
-              ]),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-secondary",
+                  on: {
+                    click: function ($event) {
+                      _vm.page_info.current_page = _vm.page_info.last_page
+                      _vm.getDetails()
+                    },
+                  },
+                },
+                [_vm._v(" " + _vm._s(_vm.page_info.last_page))]
+              ),
             ]),
           ])
         : _vm._e(),
@@ -54348,15 +54374,6 @@ var render = function () {
                       _c("detail-custom-search", {
                         attrs: { process_id: _vm.last.id },
                       }),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { href: "#" },
-                        },
-                        [_vm._v("Go somewhere")]
-                      ),
                     ],
                     1
                   ),

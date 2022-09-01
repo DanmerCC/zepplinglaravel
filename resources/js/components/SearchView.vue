@@ -15,7 +15,6 @@
                                 :process_id="last.id"
                             >
                         </detail-custom-search>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>

@@ -31,8 +31,9 @@
         <div class="row" v-if="page_info !=null">
             <div class="col-12">
                 <button class="btn btn-sm btn-primary"> {{page_info.current_page}}</button>
+                <button @click="page_info.current_page++;getDetails()" v-if="page_info.current_page != page_info.last_page - 1" class="btn btn-sm btn-secondary"> {{(page_info.current_page + 1)}}</button>
                 ...
-                <button class="btn btn-sm btn-secondary"> {{page_info.last_page}}</button>
+                <button @click="page_info.current_page = page_info.last_page;getDetails()" class="btn btn-sm btn-secondary"> {{page_info.last_page}}</button>
             </div>
         </div>
     </div>
