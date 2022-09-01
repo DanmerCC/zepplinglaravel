@@ -40,7 +40,7 @@ class CustomSearchController extends Controller
         $userdata = "df_joined";
         $queryBase = DB::connection('mysql_dfs')
         ->table($cgnatTable)
-        ->select('cgnat.Hora','cgnat.Min',$userdata.'.*')
+        ->select($cgnatTable.'.Hora',$cgnatTable.'.Min',$userdata.'.*')
         ->join($userdata,$cgnatTable.".SourceIP","=",$userdata.".SourceIP","inner")
         ;
 
