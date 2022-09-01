@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class EmpirixService {
 
-    protected $baseurl = "https://klerity.internalwom.com/";
+    protected $baseurl = "https://klerity.internalwom.com";
     protected $username;
     protected $password;
 
