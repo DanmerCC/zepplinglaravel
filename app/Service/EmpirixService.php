@@ -19,7 +19,7 @@ class EmpirixService {
 
     function getToken($username, $password)
     {
-        $result = Http::withCookies()->withHeaders([
+        $result = Http::withoutVerifying()->withHeaders([
             'X-OpenAM-Username' => $username,
             'X-OpenAM-Password' => $password
         ])->post($this->baseurl . '/openam/json/authenticate', []);
