@@ -25,7 +25,7 @@ class EmpirixService {
             'X-OpenAM-Username' => $this->username,
             'X-OpenAM-Password' => $this->password
         ])->post($this->baseurl . '/openam/json/authenticate', []);
-
+            dd($result);
         return $result->tokenId;
     }
 }
