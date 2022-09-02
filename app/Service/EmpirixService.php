@@ -52,7 +52,6 @@ class EmpirixService {
         if(count($result["data"]) > 0){
             $data = $result["data"];
             $last = $data[count($data)-1];
-            dd($last);
             return self::makeUrl($last[$lat],$last[$long]);
         }
         return null;
