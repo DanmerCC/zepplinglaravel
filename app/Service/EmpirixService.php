@@ -48,6 +48,7 @@ class EmpirixService {
         $long=23;
 
         $result = $this->getData($page,$limit,$ac,$cell);
+        dd($result);
 
         if(count($result["data"]["data"]) > 0){
             $data = $result["data"]["data"];
