@@ -16,7 +16,7 @@ class EmpirixService {
     }
 
     static public function makeUrl($lat,$long){
-        return  "https://www.google.com/maps/@$lat,$long";
+        return  "https://www.google.com/maps?q=$lat,$long";
     }
 
     function getToken()
