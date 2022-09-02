@@ -30,7 +30,7 @@ class EmpirixService {
 
     function getData($page= 1,$limit = 10)
     {
-        $result = Http::withoutVerifying()->withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->baseurl())->withHeaders([
+        $result = Http::withoutVerifying()->withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->host)->withHeaders([
             'Accepted-version' => '1.1.0',
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
