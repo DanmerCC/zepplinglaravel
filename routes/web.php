@@ -42,7 +42,7 @@ Route::get('/zepplingtst', function () {
 
 Route::get('test2', function () {
     $service = new EmpirixService(env('EMPIRIX_USER'), env('EMPIRIX_PASSWORD'));
-    dd($service->getToken());
+    dd($service->getData());
 
     return "trabajo agregado";
 });
