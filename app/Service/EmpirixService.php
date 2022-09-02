@@ -35,6 +35,6 @@ class EmpirixService {
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
         ])->get($this->baseurl . '/openam/json/authenticate', ['limit' => $limit]);
-        return $result->json()["tokenId"];
+        return $result->json();
     }
 }
