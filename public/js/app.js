@@ -8250,9 +8250,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getOpenMap: function getOpenMap(map) {
+      console.log(map);
       axios.get("/custom/mapurl", {
-        ac: map.lac_tac,
-        cell: map.sac_eci
+        params: {
+          ac: map.lac_tac,
+          cell: map.sac_eci
+        }
       }).then(function (result) {
         window.open(result.data.data, '_blank', "menubar=1,resizable=1,width=650,height=650").focus();
       })["catch"](function (err) {

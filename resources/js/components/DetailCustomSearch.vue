@@ -84,7 +84,8 @@ export default {
     },
     methods: {
         getOpenMap(map){
-            axios.get(`/custom/mapurl`,{ac:map.lac_tac,cell:map.sac_eci}).then((result) => {
+            console.log(map)
+            axios.get(`/custom/mapurl`,{params:{ac:map.lac_tac,cell:map.sac_eci}}).then((result) => {
                 window.open(result.data.data, '_blank',"menubar=1,resizable=1,width=650,height=650").focus();
             }).catch((err) => {
                 console.error(err);
