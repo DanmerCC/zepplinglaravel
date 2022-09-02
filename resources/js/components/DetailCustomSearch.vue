@@ -23,7 +23,7 @@
         </div>
         <data-table :inload="inload" :columns="columns" :items="data">
             <template #opciones="{row}">
-                <button class="btn btn-info" @click="getOpenMap()">
+                <button class="btn btn-info" @click="getOpenMap(row)">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                 </button>
             </template>
@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         getOpenMap(map){
-            axios.get(`/custom/mapurl`).then((result) => {
+            axios.get(`/custom/mapurl`,{ac:map.lac_tac,cell:map.sac_eci}).then((result) => {
                 window.open(result.data.data, '_blank',"menubar=1,resizable=1,width=650,height=650").focus();
             }).catch((err) => {
                 console.error(err);
