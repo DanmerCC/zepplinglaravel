@@ -44,8 +44,8 @@ class EmpirixService {
     }
 
     function getCoordenadas($ac,$cell,$page= 1,$limit = 10){
-        $lat=22;
-        $long=23;
+        $lat=21;
+        $long=22;
 
         $result = $this->getData($page,$limit,$ac,$cell);
 
