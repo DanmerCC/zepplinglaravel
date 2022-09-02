@@ -27,4 +27,14 @@ class EmpirixService {
         ])->post($this->baseurl . '/openam/json/authenticate', []);
         return $result->json()["tokenId"];
     }
+
+    function getData($page= 1,$limit = 10)
+    {
+        $result = Http::withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->baseurl)->withHeaders([
+            'Accepted-version' => '1.1.0',
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ])->get($this->baseurl . '/openam/json/authenticate', ['limit' => $limit]);
+        return $result->json()["tokenId"];
+    }
 }
