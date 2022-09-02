@@ -15,8 +15,8 @@ class EmpirixService {
         $this->password = $password;
     }
 
-    static public function getCoordenadas($params){
-        return  "https://www.google.com/maps/@-12.1801335,-76.9782796,15z";
+    static public function makeUrl($lat,$long){
+        return  "https://www.google.com/maps/@$lat,$long";
     }
 
     function getToken()
@@ -38,9 +38,23 @@ class EmpirixService {
         [
             'limit' => $limit,
             'filter' =>"ac=".$ac."[AND]"."cell=".$cell
-        ]
-    );
-        return $result->json();
+        ]);
+
+    return $result->json();
+    }
+
+    function getCoordenadas($ac,$cell,$page= 1,$limit = 10){
+        $lat=22;
+        $long=23;
+
+        $result = $this->getData($page,$limit,$ac,$cell);
+
+        if(count($result["data"]["data"]) > 0){
+            $data = $result["data"]["data"];
+            $last = $data[count($data)-1];
+            return self::makeUrl($last[$lat],$last[$long]);
+        }
+        return null;
     }
 
     function baseUrl(){

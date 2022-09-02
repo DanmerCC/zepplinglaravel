@@ -116,7 +116,7 @@ class CustomSearchController extends Controller
 
     function getMapUrl(Request $request ){
         $service = new EmpirixService(env('EMPIRIX_USER'), env('EMPIRIX_PASSWORD'));
-        $response = $service->getData($request->get("page")??1,$request->get("limit")??10,$request->get("ac"),$request->get("cell"));
+        $response = $service->getCoordenadas($request->get("ac"),$request->get("cell"),$request->get("page")??1,$request->get("limit")??10);
         return $this->sendResponse($response,"Correctamente cargado");
     }
 }
