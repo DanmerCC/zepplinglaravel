@@ -34,7 +34,7 @@ class EmpirixService {
             'Accepted-version' => '1.1.0',
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
-        ])->get($this->baseurl . '/openam/json/authenticate', ['limit' => $limit]);
+        ])->get($this->baseurl . '/ers-mdm/api/enrichments', ['limit' => $limit]);
         return $result->json();
     }
 }
