@@ -28,13 +28,18 @@ class EmpirixService {
         return $result->json()["tokenId"];
     }
 
-    function getData($page= 1,$limit = 10)
+    function getData($page= 1,$limit = 10,$ac,$cell)
     {
         $result = Http::withoutVerifying()->withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->host)->withHeaders([
             'Accepted-version' => '1.1.0',
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
-        ])->get($this->baseurl() . '/ers-mdm/api/enrichments/dim_cells', ['limit' => $limit]);
+        ])->get($this->baseurl() . '/ers-mdm/api/enrichments/dim_cells',
+        [
+            'limit' => $limit,
+            'filter' =>"ac=".$ac."[AND]"."cell=".$cell
+        ]
+    );
         return $result->json();
     }
 
