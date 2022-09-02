@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class EmpirixService {
 
-    protected $baseurl = "https://klerity.internalwom.com";
+    protected $host = "klerity.internalwom.com";
     protected $username;
     protected $password;
 
@@ -24,17 +24,21 @@ class EmpirixService {
         $result = Http::withoutVerifying()->withHeaders([
             'X-OpenAM-Username' => $this->username,
             'X-OpenAM-Password' => $this->password
-        ])->post($this->baseurl . '/openam/json/authenticate', []);
+        ])->post($this->baseurl() . '/openam/json/authenticate', []);
         return $result->json()["tokenId"];
     }
 
     function getData($page= 1,$limit = 10)
     {
-        $result = Http::withoutVerifying()->withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->baseurl)->withHeaders([
+        $result = Http::withoutVerifying()->withCookies(["iPlanetDirectoryPro"=>$this->getToken()],$this->baseurl())->withHeaders([
             'Accepted-version' => '1.1.0',
             'Accept' => 'application/json',
             'Content-Type' => 'application/json'
-        ])->get($this->baseurl . '/ers-mdm/api/enrichments/dim_cells', ['limit' => $limit]);
+        ])->get($this->baseurl() . '/ers-mdm/api/enrichments/dim_cells', ['limit' => $limit]);
         return $result->json();
+    }
+
+    function baseUrl(){
+        return "https://".$this->host;
     }
 }
