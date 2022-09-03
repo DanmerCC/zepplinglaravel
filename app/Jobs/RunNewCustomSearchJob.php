@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class RunNewCustomSearchJob implements ShouldQueue
 {
@@ -43,6 +44,8 @@ class RunNewCustomSearchJob implements ShouldQueue
     {
         //$command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
         $command = "python3 ".env('SCRIPT_PATH')." ".$this->descompress." ". str_replace("-", "_", $this->search->day->format('Y-m-d'))." ".$this->search->hora." ".$this->search->ip_publica ;
+
+        Log::info("Ejecutando: ".$command);
         exec($command, $output);
 
         $this->search->output = implode(",", $output);
