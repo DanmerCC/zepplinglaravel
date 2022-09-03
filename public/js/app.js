@@ -8170,11 +8170,15 @@ __webpack_require__.r(__webpack_exports__);
     process_id: {
       type: Number,
       "default": null
+    },
+    inload: {
+      type: Boolean,
+      "default": false
     }
   },
   data: function data() {
     return {
-      inload: false,
+      int_inload: false,
       page_info: {
         current_page: 1
       },
@@ -8265,7 +8269,7 @@ __webpack_require__.r(__webpack_exports__);
     getDetails: function getDetails() {
       var _this = this;
 
-      this.inload = true;
+      this.int_inload = true;
       axios.get("/custom/detail/index", {
         params: {
           page: this.page_info.current_page,
@@ -8273,7 +8277,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.inload = false;
+        _this.int_inload = false;
         _this.data = data.data.data;
         _this.page_info = {
           current_page: data.data.current_page,
@@ -8565,6 +8569,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -8590,35 +8595,51 @@ __webpack_require__.r(__webpack_exports__);
       newQuery: null,
       new_cancel: true,
       new_hora: "13",
+      lastinfo: null,
 
       /** 24 hours */
       option_hora: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
     };
   },
+  computed: {
+    loading: function loading() {
+      if (this.lastinfo == null) return true;
+      return this.lastinfo.state == "STARTED";
+    }
+  },
   methods: {
-    getLastSearch: function getLastSearch() {
+    getLastInfo: function getLastInfo() {
       var _this = this;
 
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/custom/infolast").then(function (result) {
+        _this.lastinfo = result.data.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    getLastSearch: function getLastSearch() {
+      var _this2 = this;
+
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("custom/last").then(function (result) {
-        _this.last = result.data.data.data;
+        _this2.last = result.data.data.data;
       })["catch"](function (err) {
         console.error(err);
       });
     },
     getSearchView: function getSearchView() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/custom/index").then(function (response) {
         console.log(response.data.data.data);
-        _this2.process = response.data.data.data;
+        _this3.process = response.data.data.data;
 
-        if (_this2.process.length > 0) {
-          _this2.last = _this2.process[_this2.process.length - 1];
+        if (_this3.process.length > 0) {
+          _this3.last = _this3.process[_this3.process.length - 1];
         }
       })["catch"](console.error);
     },
     prepareData: function prepareData() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/custom/create", {
         ip_publica: this.new_ip_publica,
@@ -8628,9 +8649,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response.data.data);
 
         if (response.data.success) {
-          _this3.newQuery = null;
+          _this4.newQuery = null;
 
-          _this3.getSearchView();
+          _this4.getSearchView();
         }
       })["catch"](function (error) {
         console.error(error.response);
@@ -8644,6 +8665,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    setInterval(this.getLastInfo, 5000);
     this.getSearchView();
   }
 });
@@ -54062,7 +54084,11 @@ var render = function () {
       ]),
       _vm._v(" "),
       _c("data-table", {
-        attrs: { inload: _vm.inload, columns: _vm.columns, items: _vm.data },
+        attrs: {
+          inload: _vm.inload || _vm.int_inload,
+          columns: _vm.columns,
+          items: _vm.data,
+        },
         scopedSlots: _vm._u([
           {
             key: "opciones",
@@ -54378,7 +54404,7 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("detail-custom-search", {
-                        attrs: { process_id: _vm.last.id },
+                        attrs: { inload: _vm.loading, process_id: _vm.last.id },
                       }),
                     ],
                     1

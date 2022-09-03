@@ -33,6 +33,7 @@ Route::post('custom/create', [CustomSearchController::class, 'new']);
 Route::get('custom/index', [CustomSearchController::class, 'index']);
 Route::get('custom/detail/index', [CustomSearchController::class, 'detailIndex']);
 Route::get('custom/mapurl', [CustomSearchController::class, 'getMapUrl']);
+Route::get('custom/infolast', [CustomSearchController::class, 'getLastCustomSearch']);
 
 Route::get('/zepplingtst', function () {
 

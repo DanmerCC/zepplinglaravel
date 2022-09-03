@@ -117,6 +117,11 @@ class CustomSearchController extends Controller
         return $this->sendResponse($pid, "Tarea agregada");
     }
 
+    function getLastCustomSearch(){
+        $last = CustomSearch::orderBy('id', 'DESC')->first();
+        return $this->sendResponse($last,"Ultima tarea registrada");
+    }
+
     function getMapUrl(Request $request ){
         $service = new EmpirixService(env('EMPIRIX_USER'), env('EMPIRIX_PASSWORD'));
         $response = $service->getCoordenadas($request->get("ac"),$request->get("cell"),$request->get("page")??1,$request->get("limit")??10);

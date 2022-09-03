@@ -21,7 +21,7 @@
                 <div class="col-3"></div>
             </div>
         </div>
-        <data-table :inload="inload" :columns="columns" :items="data">
+        <data-table :inload="inload || int_inload" :columns="columns" :items="data">
             <template #opciones="{row}">
                 <button class="btn btn-info" @click="getOpenMap(row)">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -46,10 +46,14 @@ export default {
             type: Number,
             default: null,
         },
+        inload:{
+            type: Boolean,
+            default: false,
+        }
     },
     data() {
         return {
-            inload:false,
+            int_inload:false,
             page_info:{
                 current_page: 1,
             },
@@ -92,14 +96,14 @@ export default {
             });
         },
         getDetails() {
-            this.inload = true;
+            this.int_inload = true;
             axios
                 .get(`/custom/detail/index`,{params:{
                     page:this.page_info.current_page,
                     Minute:this.minute
                 }})
                 .then(({ data }) => {
-                    this.inload = false;
+                    this.int_inload = false;
                     this.data = data.data.data;
                     this.page_info = {
                         current_page:data.data.current_page,

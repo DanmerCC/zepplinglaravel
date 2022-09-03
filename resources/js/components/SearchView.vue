@@ -12,6 +12,7 @@
                     <div class="card-body">
                         <h5 class="card-title"> {{ moment(last.day).format("YYYY-MM-DD") }}</h5>
                         <detail-custom-search
+                        :inload="loading"
                                 :process_id="last.id"
                             >
                         </detail-custom-search>
@@ -136,6 +137,7 @@ export default {
             newQuery: null,
             new_cancel: true,
             new_hora: "13",
+            lastinfo:null,
             /** 24 hours */
             option_hora: [
                 "01",
@@ -165,8 +167,20 @@ export default {
             ],
         };
     },
+    computed: {
+        loading() {
+            if(this.lastinfo == null)return true
+            return this.lastinfo.state == "STARTED"
+        }
+    },
     methods: {
-
+        getLastInfo(){
+            axios.get(`/custom/infolast`).then((result) => {
+                this.lastinfo = result.data.data;
+            }).catch((err) => {
+                console.error(err);
+            });
+        },
         getLastSearch(){
             axios.get(`custom/last`).then((result) => {
                 this.last = result.data.data.data;
@@ -210,6 +224,7 @@ export default {
         },
     },
     mounted() {
+        setInterval(this.getLastInfo,5000)
         this.getSearchView();
     },
 };
