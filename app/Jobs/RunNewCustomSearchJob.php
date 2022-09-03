@@ -17,15 +17,21 @@ class RunNewCustomSearchJob implements ShouldQueue
 
     protected $search;
 
+    protected $descompress = "0";
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(CustomSearch $newQuery)
+    public function __construct(CustomSearch $newQuery,bool $descompress = false)
     {
 
         $this->search = $newQuery;
+
+        if($descompress){
+            $this->descompress = "1";
+        }
     }
 
     /**
@@ -36,7 +42,7 @@ class RunNewCustomSearchJob implements ShouldQueue
     public function handle()
     {
         //$command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
-        $command = "python3 pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d'));
+        $command = "python3 ".env('SCRIPT_PATH')." ".$this->descompress." ". str_replace("-", "_", $this->search->day->format('Y-m-d')." ".$this->search->hora." ".$this->search->ip_publica) ;
         exec($command, $output);
 
         $this->search->output = implode(",", $output);

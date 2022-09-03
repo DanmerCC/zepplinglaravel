@@ -8,6 +8,7 @@ use App\Core\States;
 use App\Http\Requests\NewCustomSearchRequest;
 use App\Jobs\RunNewCustomSearchJob;
 use App\Models\CustomSearch;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -99,7 +100,9 @@ class CustomSearchController extends Controller
         $newModel->state = 'STARTED';
         $newModel->save();
 
-        dispatch(new RunNewCustomSearchJob($newModel));
+        $date = Carbon::now()->format('Y-m-d');
+
+        dispatch(new RunNewCustomSearchJob($newModel,$date!=$last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }
