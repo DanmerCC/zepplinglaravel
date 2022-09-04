@@ -10,7 +10,7 @@
                 <div v-if="last!=null" class="card" style="width: 100%;">
                     <!--<img src="#" class="card-img-top" alt="...">-->
                     <div class="card-body">
-                        <h5 class="card-title"> {{ moment(last.day).format("YYYY-MM-DD") }}</h5>
+                        <h5 class="card-title"> {{ moment(lastinfo.day).format("YYYY-MM-DD") }}</h5>
                         <detail-custom-search
                         :inload="loading"
                                 :process_id="last.id"

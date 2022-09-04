@@ -54400,7 +54400,7 @@ var render = function () {
                         _vm._v(
                           " " +
                             _vm._s(
-                              _vm.moment(_vm.last.day).format("YYYY-MM-DD")
+                              _vm.moment(_vm.lastinfo.day).format("YYYY-MM-DD")
                             )
                         ),
                       ]),
