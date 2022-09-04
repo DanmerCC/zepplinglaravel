@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Core\States;
 use App\Models\CustomSearch;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,6 +44,7 @@ class RunNewCustomSearchJob implements ShouldQueue
      */
     public function handle()
     {
+        $date = Carbon::now()->format('Y-m-d H:i:s');
         //$command = "python3 ../pythonstore/prueba.py " . str_replace("-", "_", $this->search->day->format('Y-m-d')) . ' > /' . $this->search->id . '.log 2>&1 & echo $!; ';
         $command = "python3 ".env('SCRIPT_PATH')." ".$this->descompress." ". str_replace("-", "_", $this->search->day->format('Y-m-d'))." ".$this->search->hour." ".$this->search->ip_publica ;
 
@@ -52,8 +54,8 @@ class RunNewCustomSearchJob implements ShouldQueue
         $this->search->output = implode(",", $output);
         $this->search->state = States::ENDED;
         $this->search->save();
-        Mail::raw('Hi, welcome user!', function ($message) {
-            $message->to(..)->subject(..);
+        Mail::raw('Hi, welcome user!', function ($message)use($date) {
+            $message->to(auth()->user()->email)->subject("Ejecucion $date terminada");
         });
     }
 }
