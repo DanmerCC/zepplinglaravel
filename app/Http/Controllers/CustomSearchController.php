@@ -106,16 +106,6 @@ class CustomSearchController extends Controller
 
         dispatch(new RunNewCustomSearchJob($newModel,$notify?auth()->user():null, $date!=$last->day->format('Y-m-d')));
 
-        if($notify) {
-            try {
-                Mail::raw('Se termino de ejecutar el script', function ($message) {
-                    $message->to(auth()->user()->email)->subject("Script terminado");
-                });
-            } catch (\Throwable $th) {
-                report($th);
-            }
-        }
-
         return $this->sendResponse($newModel, "Tarea agregada");
     }
 
