@@ -24,7 +24,7 @@ class NewCustomSearchRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'email_notify'=>'boolean'
         ];
     }
 }

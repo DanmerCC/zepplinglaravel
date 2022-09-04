@@ -8575,6 +8575,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      new_email_notify: true,
       last: null,
       new_ip_publica: null,
       search: null,
@@ -8644,7 +8645,8 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/custom/create", {
         ip_publica: this.new_ip_publica,
         day: this.new_date,
-        hour: this.new_hora
+        hour: this.new_hora,
+        email_notify: this.new_email_notify
       }).then(function (response) {
         console.log(response.data.data);
 
@@ -54549,7 +54551,7 @@ var render = function () {
                             _c(
                               "label",
                               { staticClass: "label", attrs: { for: "" } },
-                              [_vm._v("Terminar proceso anterior")]
+                              [_vm._v("Enviarme un correo al terminar proceso")]
                             ),
                             _vm._v(" "),
                             _c("input", {
@@ -54557,19 +54559,19 @@ var render = function () {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.new_cancel,
-                                  expression: "new_cancel",
+                                  value: _vm.new_email_notify,
+                                  expression: "new_email_notify",
                                 },
                               ],
                               attrs: { type: "checkbox", name: "", id: "" },
                               domProps: {
-                                checked: Array.isArray(_vm.new_cancel)
-                                  ? _vm._i(_vm.new_cancel, null) > -1
-                                  : _vm.new_cancel,
+                                checked: Array.isArray(_vm.new_email_notify)
+                                  ? _vm._i(_vm.new_email_notify, null) > -1
+                                  : _vm.new_email_notify,
                               },
                               on: {
                                 change: function ($event) {
-                                  var $$a = _vm.new_cancel,
+                                  var $$a = _vm.new_email_notify,
                                     $$el = $event.target,
                                     $$c = $$el.checked ? true : false
                                   if (Array.isArray($$a)) {
@@ -54577,15 +54579,17 @@ var render = function () {
                                       $$i = _vm._i($$a, $$v)
                                     if ($$el.checked) {
                                       $$i < 0 &&
-                                        (_vm.new_cancel = $$a.concat([$$v]))
+                                        (_vm.new_email_notify = $$a.concat([
+                                          $$v,
+                                        ]))
                                     } else {
                                       $$i > -1 &&
-                                        (_vm.new_cancel = $$a
+                                        (_vm.new_email_notify = $$a
                                           .slice(0, $$i)
                                           .concat($$a.slice($$i + 1)))
                                     }
                                   } else {
-                                    _vm.new_cancel = $$c
+                                    _vm.new_email_notify = $$c
                                   }
                                 },
                               },
@@ -54624,7 +54628,7 @@ var render = function () {
               ],
               null,
               false,
-              2117248867
+              1646488754
             ),
           })
         : _vm._e(),

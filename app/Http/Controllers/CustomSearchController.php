@@ -11,6 +11,7 @@ use App\Models\CustomSearch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CustomSearchController extends Controller
 {
@@ -89,6 +90,7 @@ class CustomSearchController extends Controller
     }
     function new(NewCustomSearchRequest $request)
     {
+        $notify = $request->get('email_notify')??false;
         $last = CustomSearch::orderBy('id', 'DESC')->first();
         if ($last != null) {
             if ($last->state != States::FAILED && $last->state != States::ENDED) {
@@ -103,6 +105,16 @@ class CustomSearchController extends Controller
         $date = Carbon::now()->format('Y-m-d');
 
         dispatch(new RunNewCustomSearchJob($newModel,$date!=$last->day->format('Y-m-d')));
+
+        if($notify) {
+            try {
+                Mail::raw('Se termino de ejecutar el script', function ($message) {
+                    $message->to(auth()->user()->email)->subject("Script terminado");
+                });
+            } catch (\Throwable $th) {
+                report($th);
+            }
+        }
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }

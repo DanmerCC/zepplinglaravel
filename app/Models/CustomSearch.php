@@ -15,7 +15,8 @@ class CustomSearch extends Model
         'day',
         'output',
         'pid',
-        'state'
+        'state',
+        'email'
     ];
 
     protected $casts = ['day' => 'date'];

@@ -95,11 +95,11 @@
                         </div>
                         <div>
                             <label class="label" for=""
-                                >Terminar proceso anterior</label
+                                >Enviarme un correo al terminar proceso</label
                             >
                             <input
                                 type="checkbox"
-                                v-model="new_cancel"
+                                v-model="new_email_notify"
                                 name=""
                                 id=""
                             />
@@ -122,6 +122,7 @@ import moment from "moment";
 export default {
     data() {
         return {
+            new_email_notify:true,
             last:null,
             new_ip_publica: null,
             search: null,
@@ -206,6 +207,7 @@ export default {
                     ip_publica: this.new_ip_publica,
                     day: this.new_date,
                     hour: this.new_hora,
+                    email_notify:this.new_email_notify
                 })
                 .then((response) => {
                     console.log(response.data.data);

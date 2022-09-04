@@ -29,15 +29,19 @@ Route::get('process', [ParagraphController::class, 'process']);
 Route::post('parrafostandar/{index}', [ParagraphController::class, 'paragrafo']);
 Route::get('paragraphs', [ParagraphController::class, 'paragraphs']);
 Route::post('stop/decompres', [ParagraphController::class, 'stopDecompres']);
-Route::post('custom/create', [CustomSearchController::class, 'new']);
-Route::get('custom/index', [CustomSearchController::class, 'index']);
-Route::get('custom/detail/index', [CustomSearchController::class, 'detailIndex']);
-Route::get('custom/mapurl', [CustomSearchController::class, 'getMapUrl']);
-Route::get('custom/infolast', [CustomSearchController::class, 'getLastCustomSearch']);
 
-Route::get('/zepplingtst', function () {
+Route::group(['middleware'=>'auth'], function () {
+    Route::post('custom/create', [CustomSearchController::class, 'new']);
+    Route::get('custom/index', [CustomSearchController::class, 'index']);
+    Route::get('custom/detail/index', [CustomSearchController::class, 'detailIndex']);
+    Route::get('custom/mapurl', [CustomSearchController::class, 'getMapUrl']);
+    Route::get('custom/infolast', [CustomSearchController::class, 'getLastCustomSearch']);
 
-    return view('customsearch');
+    Route::get('/zepplingtst', function () {
+
+        return view('customsearch');
+    });
+
 });
 
 

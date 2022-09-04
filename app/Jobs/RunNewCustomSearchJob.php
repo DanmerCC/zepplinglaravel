@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RunNewCustomSearchJob implements ShouldQueue
 {
@@ -51,5 +52,8 @@ class RunNewCustomSearchJob implements ShouldQueue
         $this->search->output = implode(",", $output);
         $this->search->state = States::ENDED;
         $this->search->save();
+        Mail::raw('Hi, welcome user!', function ($message) {
+            $message->to(..)->subject(..);
+        });
     }
 }
