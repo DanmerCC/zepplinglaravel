@@ -104,7 +104,7 @@ class CustomSearchController extends Controller
 
         $date = Carbon::now()->format('Y-m-d');
 
-        dispatch(new RunNewCustomSearchJob($newModel,$date!=$last->day->format('Y-m-d')));
+        dispatch(new RunNewCustomSearchJob($newModel,$notify?auth()->user():null, $date!=$last->day->format('Y-m-d')));
 
         if($notify) {
             try {

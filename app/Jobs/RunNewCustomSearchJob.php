@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Core\States;
 use App\Models\CustomSearch;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -22,16 +23,18 @@ class RunNewCustomSearchJob implements ShouldQueue
 
     protected $descompress = "0";
 
+    protected $executor;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(CustomSearch $newQuery,bool $descompress = false)
+    public function __construct(CustomSearch $newQuery,User $user = null,bool $descompress = false)
     {
 
         $this->search = $newQuery;
-
+        $this->executor= $user;
         if($descompress){
             $this->descompress = "1";
         }
@@ -54,8 +57,11 @@ class RunNewCustomSearchJob implements ShouldQueue
         $this->search->output = implode(",", $output);
         $this->search->state = States::ENDED;
         $this->search->save();
-        Mail::raw('Hi, welcome user!', function ($message)use($date) {
-            $message->to(auth()->user()->email)->subject("Ejecucion $date terminada");
-        });
+        if($this->executor !=null){
+            $email = $this->executor->email;
+            Mail::raw('Hi, welcome user!', function ($message)use($date,$email) {
+                $message->to($email)->subject("Ejecucion $date terminada");
+            });
+        }
     }
 }
