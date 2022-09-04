@@ -6,6 +6,7 @@ use App\Jobs\RunNewCustomSearchJob;
 use App\Models\CustomSearch;
 use App\Service\EmpirixService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,12 @@ Route::group(['middleware'=>'auth'], function () {
     Route::get('/zepplingtst', function () {
 
         return view('customsearch');
+    });
+    Route::get('/mailtest/{email}', function ($email) {
+
+        Mail::raw('Prueba', function ($message)use($email) {
+            $message->to($email)->subject("Script terminado");
+        });
     });
 
 });
