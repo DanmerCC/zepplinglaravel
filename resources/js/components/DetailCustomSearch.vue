@@ -66,7 +66,7 @@ export default {
                 { name: "DestinationIP", value: "DestinationIP" },
                 { name: "imsi", value: "imsi" },
                 { name: "sequence", value: "sequence" },
-                { name: "start_time", value: "start_time" },
+                /*{ name: "start_time", value: "start_time" },*/
                 { name: "end_time", value: "end_time" },
                 { name: "msisdn", value: "msisdn" },
                 { name: "imei", value: "imei" },
