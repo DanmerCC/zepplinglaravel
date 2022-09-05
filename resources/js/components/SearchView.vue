@@ -7,14 +7,16 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div v-if="last!=null" class="card" style="width: 100%;">
+                <div v-if="last != null" class="card" style="width: 100%">
                     <!--<img src="#" class="card-img-top" alt="...">-->
-                    <div class="card-body">
-                        <h5 class="card-title"> {{ moment(lastinfo.day).format("YYYY-MM-DD") }}</h5>
+                    <div v-if="lastinfo != null" class="card-body">
+                        <h5 class="card-title">
+                            {{ moment(lastinfo.day).format("YYYY-MM-DD") }}
+                        </h5>
                         <detail-custom-search
-                        :inload="loading"
-                                :process_id="last.id"
-                            >
+                            :inload="loading"
+                            :process_id="last.id"
+                        >
                         </detail-custom-search>
                     </div>
                 </div>
@@ -23,16 +25,16 @@
         <div class="row">
             <div class="col-12">
                 <data-table
-                data-table-id="table-id"
-                v-if="false"
+                    data-table-id="table-id"
+                    v-if="false"
                     class="principal_datatable"
                     :columns="columns"
                     :items="process"
                 >
-                    <template #day="{row}">
+                    <template #day="{ row }">
                         {{ moment(row.day).format("YYYY-MM-DD") }}
                     </template>
-                    <template #textarea="{row}">
+                    <template #textarea="{ row }">
                         <input
                             class="form-control"
                             type="text"
@@ -41,10 +43,8 @@
                             placeholder="Ip publica"
                             v-model="row.ip_publica"
                         />
-                        <detail-custom-search
-                            :process_id="row.id"
-                        >
-                    </detail-custom-search>
+                        <detail-custom-search :process_id="row.id">
+                        </detail-custom-search>
                     </template>
                 </data-table>
             </div>
@@ -122,8 +122,8 @@ import moment from "moment";
 export default {
     data() {
         return {
-            new_email_notify:true,
-            last:null,
+            new_email_notify: true,
+            last: null,
             new_ip_publica: null,
             search: null,
             new_ip: null,
@@ -138,7 +138,7 @@ export default {
             newQuery: null,
             new_cancel: true,
             new_hora: "13",
-            lastinfo:null,
+            lastinfo: null,
             /** 24 hours */
             option_hora: [
                 "01",
@@ -170,24 +170,30 @@ export default {
     },
     computed: {
         loading() {
-            if(this.lastinfo == null)return true
-            return this.lastinfo.state == "STARTED"
-        }
+            if (this.lastinfo == null) return true;
+            return this.lastinfo.state == "STARTED";
+        },
     },
     methods: {
-        getLastInfo(){
-            axios.get(`/custom/infolast`).then((result) => {
-                this.lastinfo = result.data.data;
-            }).catch((err) => {
-                console.error(err);
-            });
+        getLastInfo() {
+            axios
+                .get(`/custom/infolast`)
+                .then((result) => {
+                    this.lastinfo = result.data.data;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         },
-        getLastSearch(){
-            axios.get(`custom/last`).then((result) => {
-                this.last = result.data.data.data;
-            }).catch((err) => {
-                console.error(err);
-            });
+        getLastSearch() {
+            axios
+                .get(`custom/last`)
+                .then((result) => {
+                    this.last = result.data.data.data;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         },
         getSearchView() {
             axios
@@ -195,7 +201,7 @@ export default {
                 .then((response) => {
                     console.log(response.data.data.data);
                     this.process = response.data.data.data;
-                    if(this.process.length > 0) {
+                    if (this.process.length > 0) {
                         this.last = this.process[this.process.length - 1];
                     }
                 })
@@ -207,7 +213,7 @@ export default {
                     ip_publica: this.new_ip_publica,
                     day: this.new_date,
                     hour: this.new_hora,
-                    email_notify:this.new_email_notify
+                    email_notify: this.new_email_notify,
                 })
                 .then((response) => {
                     console.log(response.data.data);
@@ -226,7 +232,7 @@ export default {
         },
     },
     mounted() {
-        setInterval(this.getLastInfo,5000)
+        setInterval(this.getLastInfo, 5000);
         this.getSearchView();
     },
 };

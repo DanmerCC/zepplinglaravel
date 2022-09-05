@@ -8124,6 +8124,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8178,6 +8243,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      filter_range: null,
       int_inload: false,
       page_info: {
         current_page: 1
@@ -8185,6 +8251,8 @@ __webpack_require__.r(__webpack_exports__);
       search: null,
       new_ip: null,
       minute: null,
+      filter_start_minute: null,
+      filter_end_minute: null,
       columns: [{
         name: " ",
         value: "opciones"
@@ -8258,7 +8326,7 @@ __webpack_require__.r(__webpack_exports__);
           cell: map.sac_eci
         }
       }).then(function (result) {
-        window.open(result.data.data, '_blank', "menubar=1,resizable=1,width=650,height=650").focus();
+        window.open(result.data.data, "_blank", "menubar=1,resizable=1,width=650,height=650").focus();
       })["catch"](function (err) {
         console.error(err);
       });
@@ -8267,11 +8335,22 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.int_inload = true;
+      var filters = {};
+
+      if (this.filter_range != null) {
+        filters = {
+          filter_minute: {
+            start: this.filter_range.start,
+            end: this.filter_range.end
+          }
+        };
+      }
+
       axios.get("/custom/detail/index", {
-        params: {
+        params: _objectSpread({
           page: this.page_info.current_page,
           Minute: this.minute
-        }
+        }, filters)
       }).then(function (_ref) {
         var data = _ref.data;
         _this.int_inload = false;
@@ -8285,6 +8364,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     minute: function minute(newValue, oldValue) {
+      this.getDetails();
+    },
+    filter_range: function filter_range(newValue, oldValue) {
+      console.log("filter_range: " + newValue);
       this.getDetails();
     }
   },
@@ -54057,26 +54140,99 @@ var render = function () {
     [
       _c("div", { staticClass: "container-fluid" }, [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-12" }, [
-            _vm._v("\n                Filtrar Minuto\n            "),
-          ]),
+          _c("div", { staticClass: "col-12" }, [_vm._v("Filtrar Minuto")]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-3" },
-            [
-              _c("minute-selector", {
-                model: {
-                  value: _vm.minute,
-                  callback: function ($$v) {
-                    _vm.minute = $$v
+          _vm.filter_range == null
+            ? _c(
+                "div",
+                { staticClass: "col-3" },
+                [
+                  _vm._v("\n                Desde\n                "),
+                  _c("minute-selector", {
+                    model: {
+                      value: _vm.filter_start_minute,
+                      callback: function ($$v) {
+                        _vm.filter_start_minute = $$v
+                      },
+                      expression: "filter_start_minute",
+                    },
+                  }),
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filter_range == null
+            ? _c(
+                "div",
+                { staticClass: "col-3" },
+                [
+                  _vm._v("\n                Hasta\n                "),
+                  _c("minute-selector", {
+                    model: {
+                      value: _vm.filter_end_minute,
+                      callback: function ($$v) {
+                        _vm.filter_end_minute = $$v
+                      },
+                      expression: "filter_end_minute",
+                    },
+                  }),
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filter_range == null
+            ? _c("div", { staticClass: "col-3" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: {
+                      disabled:
+                        _vm.filter_start_minute == null ||
+                        _vm.filter_end_minute == null,
+                    },
+                    on: {
+                      click: function ($event) {
+                        _vm.filter_range = {
+                          start: _vm.filter_start_minute,
+                          end: _vm.filter_end_minute,
+                        }
+                      },
+                    },
                   },
-                  expression: "minute",
-                },
-              }),
-            ],
-            1
-          ),
+                  [_vm._v("\n                    Filtrar\n                ")]
+                ),
+              ])
+            : _c("div", { staticClass: "col-3" }, [
+                _c("div", { staticClass: "btn" }, [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.filter_range.start) +
+                      " -\n                    " +
+                      _vm._s(_vm.filter_range.end) +
+                      "\n                    "
+                  ),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-danger",
+                      on: {
+                        click: function ($event) {
+                          $event.stopPropagation()
+                          _vm.filter_range = null
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                        X\n                    "
+                      ),
+                    ]
+                  ),
+                ]),
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-3" }),
         ]),
@@ -54121,7 +54277,11 @@ var render = function () {
         ? _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-12" }, [
               _c("button", { staticClass: "btn btn-sm btn-primary" }, [
-                _vm._v(" " + _vm._s(_vm.page_info.current_page)),
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.page_info.current_page) +
+                    "\n            "
+                ),
               ]),
               _vm._v(" "),
               _vm.page_info.current_page != _vm.page_info.last_page - 1
@@ -54136,7 +54296,13 @@ var render = function () {
                         },
                       },
                     },
-                    [_vm._v(" " + _vm._s(_vm.page_info.current_page + 1))]
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.page_info.current_page + 1) +
+                          "\n            "
+                      ),
+                    ]
                   )
                 : _vm._e(),
               _vm._v("\n            ...\n            "),
@@ -54151,7 +54317,13 @@ var render = function () {
                     },
                   },
                 },
-                [_vm._v(" " + _vm._s(_vm.page_info.last_page))]
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.page_info.last_page) +
+                      "\n            "
+                  ),
+                ]
               ),
             ]),
           ])
@@ -54389,25 +54561,33 @@ var render = function () {
                 "div",
                 { staticClass: "card", staticStyle: { width: "100%" } },
                 [
-                  _c(
-                    "div",
-                    { staticClass: "card-body" },
-                    [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v(
-                          " " +
-                            _vm._s(
-                              _vm.moment(_vm.lastinfo.day).format("YYYY-MM-DD")
-                            )
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("detail-custom-search", {
-                        attrs: { inload: _vm.loading, process_id: _vm.last.id },
-                      }),
-                    ],
-                    1
-                  ),
+                  _vm.lastinfo != null
+                    ? _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  _vm
+                                    .moment(_vm.lastinfo.day)
+                                    .format("YYYY-MM-DD")
+                                ) +
+                                "\n                    "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("detail-custom-search", {
+                            attrs: {
+                              inload: _vm.loading,
+                              process_id: _vm.last.id,
+                            },
+                          }),
+                        ],
+                        1
+                      )
+                    : _vm._e(),
                 ]
               )
             : _vm._e(),
