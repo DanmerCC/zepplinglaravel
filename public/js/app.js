@@ -8201,11 +8201,9 @@ __webpack_require__.r(__webpack_exports__);
         name: "sequence",
         value: "sequence"
       },
-      /*{ name: "start_time", value: "start_time" },*/
+      /*{ name: "start_time", value: "start_time" },
+      { name: "end_time", value: "end_time" },*/
       {
-        name: "end_time",
-        value: "end_time"
-      }, {
         name: "msisdn",
         value: "msisdn"
       }, {
