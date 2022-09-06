@@ -213,6 +213,10 @@ class CustomSearchController extends Controller
         $custom->state = "ENDED";
         $custom->save();
 
+        Mail::raw('Hi, welcome user!', function ($message)use($custom) {
+            $message->to("leandro.riveraact@wom.co")->subject("Ejecucion ".$custom->day->format('Y-m-d')." terminada");
+        });
+
         return $this->sendResponse(null,"Correctamente recibido");
     }
 
