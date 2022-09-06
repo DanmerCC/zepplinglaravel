@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CustomSearchController extends Controller
@@ -198,6 +199,16 @@ class CustomSearchController extends Controller
         dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
+    }
+
+    function handlerEndScript($id){
+
+        Log::info("Recibiendo evento de terminado de script");
+        $custom  = CustomSearch::find($id);
+        $custom->state = "ENDED";
+        $custom->save();
+
+        return $this->sendResponse(null,"Correctamente recibido");
     }
 
     function inload(NewCustomSearchRequest $request)

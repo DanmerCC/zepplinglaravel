@@ -52,6 +52,8 @@ Route::group(['middleware'=>'auth'], function () {
 });
 
 
+Route::get('handler/end/{id}',[CustomSearchController::class,'handlerEndScript'])->name('handler.endscript');
+
 
 
 Route::get('logout', function () {
