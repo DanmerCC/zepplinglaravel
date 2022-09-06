@@ -194,9 +194,13 @@ class CustomSearchController extends Controller
         $newModel->state = 'STARTED';
         $newModel->save();
 
-        $date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->format('Y-m-d-HH-ii-ss');
 
-        dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
+        $command = "python3 ".env('SCRIPT_PATH');
+        $command.=" ".$this->descompress." ". str_replace("-", "_", $this->search->day->format('Y-m-d'))." ".$this->search->hour." ".$this->search->ip_publica ;
+        $command.=" ".route("handler.endscript",["id"=>$newModel->id])." > /bigdata/scripts/buscador".Carbon::now()->format('Y_m_d_H_i_s').".log 2>&1 &";
+
+        //dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }
