@@ -192,6 +192,7 @@ class CustomSearchController extends Controller
         }
         $newModel = new CustomSearch($request->only(['day', 'hour', 'ip_publica']));
         $newModel->state = 'STARTED';
+        $newModel->user_id = auth()->user()->id;
         $newModel->save();
 
         $date = Carbon::now()->format('Y-m-d-HH-ii-ss');

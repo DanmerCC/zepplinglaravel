@@ -24,4 +24,14 @@ class CustomSearch extends Model
     function updateState()
     {
     }
+
+    /**
+     * Get the user associated with the CustomSearch
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
