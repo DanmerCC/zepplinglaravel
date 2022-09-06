@@ -199,7 +199,7 @@ class CustomSearchController extends Controller
         $command = "python3 ".env('SCRIPT_PATH');
         $command.=" ".($date != $last->day->format('Y-m-d')?"1":"0")." ". str_replace("-", "_", $newModel->day->format('Y-m-d'))." ".$newModel->hour." ".$newModel->ip_publica ;
         $command.=" ".route("handler.endscript",["id"=>$newModel->id])." > /bigdata/scripts/buscador".Carbon::now()->format('Y_m_d_H_i_s').".log 2>&1 &";
-
+        Log::info($command);
         //dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
