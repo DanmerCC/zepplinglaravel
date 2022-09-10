@@ -34,7 +34,7 @@ class TestJob implements ShouldQueue
         $this->commnadlog("ls -la .");
         $this->commnadlog("pwd");
         $this->commnadlog('echo "$USER"');
-        $this->commnadlog('echo "$USER"');
+        $this->commnadlog('whoami');
     }
 
     private function commnadlog($command) {
