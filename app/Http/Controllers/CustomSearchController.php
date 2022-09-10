@@ -198,16 +198,16 @@ class CustomSearchController extends Controller
         $date = Carbon::now()->format('Y-m-d');
 
         $command = "python3 ".env('SCRIPT_PATH');
-        $command.=" ".($date != $last->day->format('Y-m-d')?"1":"0")." ". str_replace("-", "_", $newModel->day->format('Y-m-d'))." ".$newModel->hour." ".$newModel->ip_publica ;
+        $command.=" ".($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d')?"1":"0")." ". str_replace("-", "_", $newModel->day->format('Y-m-d'))." ".$newModel->hour." ".$newModel->ip_publica ;
         $command.=" ".route("handler.endscript",["id"=>$newModel->id])." > /bigdata/scripts/buscador".Carbon::now()->format('Y_m_d_H_i_s').".log 2>&1 &";
         //Log::info($command);
         //exec($command);
         Log::info("Despachando job con ...");
         Log::info("date:");
-        Log::info($date);
+        Log::info($newModel->day->format('Y-m-d'));
         Log::info("last date:");
         Log::info($last->day->format('Y-m-d'));
-        dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
+        dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $newModel->day->format('Y-m-d')!= $last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }
