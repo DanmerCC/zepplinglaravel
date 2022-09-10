@@ -206,8 +206,14 @@ class CustomSearchController extends Controller
         Log::info("date:");
         Log::info($newModel->day->format('Y-m-d'));
         Log::info("last date:");
-        Log::info($last->day->format('Y-m-d'));
-        dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $newModel->day->format('Y-m-d')!= $last->day->format('Y-m-d')));
+        if($last ==null){
+            Log::info("null");
+            dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, true));
+        }
+        else{
+            Log::info($last->day->format('Y-m-d'));
+            dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $newModel->day->format('Y-m-d')!= $last->day->format('Y-m-d')));
+        }
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }
