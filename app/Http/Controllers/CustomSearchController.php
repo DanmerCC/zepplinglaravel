@@ -202,6 +202,11 @@ class CustomSearchController extends Controller
         $command.=" ".route("handler.endscript",["id"=>$newModel->id])." > /bigdata/scripts/buscador".Carbon::now()->format('Y_m_d_H_i_s').".log 2>&1 &";
         //Log::info($command);
         //exec($command);
+        Log::info("Despachando job con ...");
+        Log::info("date:");
+        Log::info($date);
+        Log::info("last date:");
+        Log::info($last->day->format('Y-m-d'));
         dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $date != $last->day->format('Y-m-d')));
 
         return $this->sendResponse($newModel, "Tarea agregada");
