@@ -195,7 +195,7 @@ class CustomSearchController extends Controller
         $newModel->user_id = auth()->user()->id;
         $newModel->save();
 
-        $date = Carbon::now()->format('Y-m-d-HH-ii-ss');
+        $date = Carbon::now()->format('Y-m-d');
 
         $command = "python3 ".env('SCRIPT_PATH');
         $command.=" ".($date != $last->day->format('Y-m-d')?"1":"0")." ". str_replace("-", "_", $newModel->day->format('Y-m-d'))." ".$newModel->hour." ".$newModel->ip_publica ;
