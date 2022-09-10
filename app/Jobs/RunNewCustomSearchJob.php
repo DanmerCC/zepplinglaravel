@@ -14,6 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class RunNewCustomSearchJob implements ShouldQueue
 {
@@ -63,5 +64,18 @@ class RunNewCustomSearchJob implements ShouldQueue
                 $message->to($email)->subject("Ejecucion $date terminada");
             });
         }
+    }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    public function failed(Throwable $exception)
+    {
+        report($exception);
+        $this->search->state = States::FAILED;
+        $this->search->save();
     }
 }
