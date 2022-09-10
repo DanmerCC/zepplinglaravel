@@ -57,7 +57,7 @@ Route::get('handler/end/{id}',[CustomSearchController::class,'handlerEndScript']
 
 Route::get('test',function(){
     dispatch(new TestJob());
-   return \DB::select('*')->from('jobs')->orderBy('id','DESC')->get()->toArray();
+   return \DB::table('jobs')->orderBy('id','DESC')->get()->toArray();
 });
 
 Route::get('logout', function () {
