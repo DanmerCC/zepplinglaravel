@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomSearchController;
 use App\Http\Controllers\ParagraphController;
 use App\Jobs\RunNewCustomSearchJob;
+use App\Jobs\TestJob;
 use App\Models\CustomSearch;
 use App\Service\EmpirixService;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,10 @@ Route::group(['middleware'=>'auth'], function () {
 
 Route::get('handler/end/{id}',[CustomSearchController::class,'handlerEndScript'])->name('handler.endscript');
 
-
+Route::get('test',function(){
+    dispatch(new TestJob());
+   return \DB::select('*')->from('jobs')->orderBy('id','DESC')->get()->toArray();
+});
 
 Route::get('logout', function () {
     Auth::logout();
