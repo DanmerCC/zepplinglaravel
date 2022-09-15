@@ -76,6 +76,9 @@ class CustomSearchController extends Controller
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
         $filter_minute = $request->get("filter_minute");
+        if (env('APP_DEBUG')) {
+            DB::enableQueryLog();
+        }
         $queryBase = DB::connection('mysql_dfs')
             ->table($cgnatTable)
             ->select($cgnatTable . '.Hora', $cgnatTable . '.Min', $userdata . '.*')
@@ -177,7 +180,11 @@ class CustomSearchController extends Controller
             $queryBase->where("Min", "like", $request->get('Min') . "%");
         }
 
-        $cgnat = $queryBase->paginate();
+        $cgnat = $queryBase->paginate()->toArray();
+        if (env('APP_DEBUG')) {
+            $querylog = DB::getQueryLog();
+            return $this->sendResponse([...$cgnat, "querylog" => $querylog], "Listado correctamente");
+        }
         return $this->sendResponse($cgnat, "Listado correctamente");
     }
     function new(NewCustomSearchRequest $request)
@@ -197,39 +204,39 @@ class CustomSearchController extends Controller
 
         $date = Carbon::now()->format('Y-m-d');
 
-        $command = "python3 ".env('SCRIPT_PATH');
-        $command.=" ".($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d')?"1":"0")." ". str_replace("-", "_", $newModel->day->format('Y-m-d'))." ".$newModel->hour." ".$newModel->ip_publica ;
-        $command.=" ".route("handler.endscript",["id"=>$newModel->id])." > /bigdata/scripts/buscador".Carbon::now()->format('Y_m_d_H_i_s').".log 2>&1 &";
+        $command = "python3 " . env('SCRIPT_PATH');
+        $command .= " " . ($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d') ? "1" : "0") . " " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
+        $command .= " " . route("handler.endscript", ["id" => $newModel->id]) . " > /bigdata/scripts/buscador" . Carbon::now()->format('Y_m_d_H_i_s') . ".log 2>&1 &";
         //Log::info($command);
         //exec($command);
         Log::info("Despachando job con ...");
         Log::info("date:");
         Log::info($newModel->day->format('Y-m-d'));
         Log::info("last date:");
-        if($last ==null){
+        if ($last == null) {
             Log::info("null");
             dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, true));
-        }
-        else{
+        } else {
             Log::info($last->day->format('Y-m-d'));
-            dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $newModel->day->format('Y-m-d')!= $last->day->format('Y-m-d')));
+            dispatch(new RunNewCustomSearchJob($newModel, $notify ? auth()->user() : null, $newModel->day->format('Y-m-d') != $last->day->format('Y-m-d')));
         }
 
         return $this->sendResponse($newModel, "Tarea agregada");
     }
 
-    function handlerEndScript($id){
+    function handlerEndScript($id)
+    {
 
         Log::info("Recibiendo evento de terminado de script");
         $custom  = CustomSearch::find($id);
         $custom->state = "ENDED";
         $custom->save();
 
-        Mail::raw('Hi, welcome user!', function ($message)use($custom) {
-            $message->to("leandro.riveraact@wom.co")->subject("Ejecucion ".$custom->day->format('Y-m-d')." terminada");
+        Mail::raw('Hi, welcome user!', function ($message) use ($custom) {
+            $message->to("leandro.riveraact@wom.co")->subject("Ejecucion " . $custom->day->format('Y-m-d') . " terminada");
         });
 
-        return $this->sendResponse(null,"Correctamente recibido");
+        return $this->sendResponse(null, "Correctamente recibido");
     }
 
     function inload(NewCustomSearchRequest $request)
