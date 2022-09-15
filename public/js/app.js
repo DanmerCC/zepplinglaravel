@@ -8334,6 +8334,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getDetails: function getDetails() {
       var _this = this;
 
+      if (document["stop"] == true) {
+        console.log("Recarga detenida");
+        return;
+      }
+
       this.int_inload = true;
       var filters = {};
 
@@ -8691,6 +8696,11 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getLastInfo: function getLastInfo() {
       var _this = this;
+
+      if (document["stop"] == true) {
+        console.log("Recarga detenida");
+        return;
+      }
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/custom/infolast").then(function (result) {
         _this.lastinfo = result.data.data;

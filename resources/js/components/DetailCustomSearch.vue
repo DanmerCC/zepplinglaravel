@@ -169,6 +169,10 @@ export default {
                 });
         },
         getDetails() {
+            if (document["stop"] == true) {
+                console.log("Recarga detenida");
+                return;
+            }
             this.int_inload = true;
             let filters = {};
             if (this.filter_range != null) {

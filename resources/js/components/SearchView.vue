@@ -176,6 +176,10 @@ export default {
     },
     methods: {
         getLastInfo() {
+            if (document["stop"] == true) {
+                console.log("Recarga detenida");
+                return;
+            }
             axios
                 .get(`/custom/infolast`)
                 .then((result) => {
