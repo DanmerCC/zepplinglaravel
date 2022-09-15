@@ -76,6 +76,8 @@ class CustomSearchController extends Controller
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
         $filter_minute = $request->get("filter_minute");
+        $page = $request->get("page") ?? 1;
+        $per_page = $request->get("limit") ?? 15;
         if (env('APP_DEBUG')) {
             DB::enableQueryLog();
         }
@@ -180,7 +182,13 @@ class CustomSearchController extends Controller
             $queryBase->where("Min", "like", $request->get('Min') . "%");
         }
 
-        $cgnat = $queryBase->paginate()->toArray();
+        $queryBase = $queryBase->limit($per_page)->skip($per_page * ($page - 1));
+        $cgnat = $queryBase->get()->toArray();
+        $cgnat = [
+            "data" => $cgnat,
+            "current_page" => $page,
+            "last_page" => null
+        ];
         if (env('APP_DEBUG')) {
             $querylog = DB::getQueryLog();
             return $this->sendResponse([...$cgnat, "querylog" => $querylog], "Listado correctamente");
