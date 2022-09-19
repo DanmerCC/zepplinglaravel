@@ -8263,6 +8263,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: "DestinationIP",
         value: "DestinationIP"
       }, {
+        name: "SourceNatPort",
+        value: "SourceNatPort"
+      }, {
         name: "imsi",
         value: "imsi"
       }, {

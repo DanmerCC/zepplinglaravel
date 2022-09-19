@@ -126,6 +126,7 @@ export default {
                 { name: " ", value: "opciones" },
                 { name: "SourceIP", value: "SourceIP" },
                 { name: "DestinationIP", value: "DestinationIP" },
+                { name: "SourceNatPort", value: "SourceNatPort" },
                 { name: "imsi", value: "imsi" },
                 { name: "sequence", value: "sequence" },
                 /*{ name: "start_time", value: "start_time" },
