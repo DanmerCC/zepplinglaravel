@@ -215,8 +215,6 @@ class CustomSearchController extends Controller
         }
 
 
-        CustomSearch::query()->truncate();
-
         $newModel = new CustomSearch($request->only(['day', 'hour', 'ip_publica']));
         $newModel->state = 'STARTED';
         $newModel->user_id = auth()->user()->id;
