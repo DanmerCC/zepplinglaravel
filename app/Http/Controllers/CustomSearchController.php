@@ -217,8 +217,8 @@ class CustomSearchController extends Controller
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
 
-        DB::table($cgnatTable)->truncate();
-        DB::table($userdata)->truncate();
+        DB::connection('mysql_dfs')->table($cgnatTable)->truncate();
+        DB::connection('mysql_dfs')->table($userdata)->truncate();
 
 
         $newModel = new CustomSearch($request->only(['day', 'hour', 'ip_publica']));
