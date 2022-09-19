@@ -2,6 +2,16 @@
     <div>
         <div class="container-fluid">
             <div class="row">
+                <div class="col-12">
+                    <input
+                        @keyup.enter="getDetails()"
+                        class="form-control"
+                        type="text"
+                        name=""
+                        id=""
+                        v-model="search"
+                    />
+                </div>
                 <div class="col-12">Filtrar Minuto</div>
                 <div v-if="filter_range == null" class="col-3">
                     Desde
@@ -183,6 +193,9 @@ export default {
                         end: this.filter_range.end,
                     },
                 };
+            }
+            if (this.search != "" && this.search != null) {
+                filters["search"] = this.search;
             }
             axios
                 .get(`/custom/detail/index`, {

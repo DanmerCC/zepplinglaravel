@@ -8230,6 +8230,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     process_id: {
@@ -8352,6 +8362,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             end: this.filter_range.end
           }
         };
+      }
+
+      if (this.search != "" && this.search != null) {
+        filters["search"] = this.search;
       }
 
       axios.get("/custom/detail/index", {
@@ -54153,6 +54167,39 @@ var render = function () {
     [
       _c("div", { staticClass: "container-fluid" }, [
         _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search",
+                },
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", name: "", id: "" },
+              domProps: { value: _vm.search },
+              on: {
+                keyup: function ($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.getDetails()
+                },
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                },
+              },
+            }),
+          ]),
+          _vm._v(" "),
           _c("div", { staticClass: "col-12" }, [_vm._v("Filtrar Minuto")]),
           _vm._v(" "),
           _vm.filter_range == null

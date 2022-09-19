@@ -86,6 +86,11 @@ class CustomSearchController extends Controller
             ->select($cgnatTable . '.Hora', $cgnatTable . '.Min', $userdata . '.*')
             ->join($userdata, $cgnatTable . ".SourceIP", "=", $userdata . ".SourceIP", "inner");
 
+        if ($request->has('search')) {
+            if ($request->get('search') != "") {
+                $queryBase->where('nombre_cliente', 'like', "%" . $request->get('search'));
+            }
+        }
         if ($filter_minute != null) {
             $json = json_decode($filter_minute);
             /*$minutes = [
