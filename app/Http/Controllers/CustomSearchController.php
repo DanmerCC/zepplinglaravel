@@ -89,6 +89,8 @@ class CustomSearchController extends Controller
         if ($request->has('search')) {
             if ($request->get('search') != "") {
                 $queryBase->where('nombre_cliente', 'like', "%" . $request->get('search'));
+                $queryBase->orWhere('nombre_cliente', 'like', "%" . $request->get('search') . "%");
+                $queryBase->orWhere('nombre_cliente', 'like', $request->get('search') . "%");
             }
         }
         if ($filter_minute != null) {
