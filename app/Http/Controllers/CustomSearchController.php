@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schema;
 
 class CustomSearchController extends Controller
 {
@@ -212,6 +213,10 @@ class CustomSearchController extends Controller
                 return $this->sendError("Ya hay otro proceso en curso", 503);
             }
         }
+
+
+        CustomSearch::query()->truncate();
+
         $newModel = new CustomSearch($request->only(['day', 'hour', 'ip_publica']));
         $newModel->state = 'STARTED';
         $newModel->user_id = auth()->user()->id;
