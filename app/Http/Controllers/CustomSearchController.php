@@ -229,7 +229,11 @@ class CustomSearchController extends Controller
         $date = Carbon::now()->format('Y-m-d');
 
         $command = "python3 " . env('SCRIPT_PATH');
-        $command .= " " . ($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d') ? "1" : "0") . " " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
+        if($last){
+            $command .= " " . ($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d') ? "1" : "0") . " " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
+        }else{
+            $command .= " 1 " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
+        }
         $command .= " " . route("handler.endscript", ["id" => $newModel->id]) . " > /bigdata/scripts/buscador" . Carbon::now()->format('Y_m_d_H_i_s') . ".log 2>&1 &";
         //Log::info($command);
         //exec($command);
