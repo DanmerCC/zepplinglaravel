@@ -217,7 +217,8 @@ class CustomSearchController extends Controller
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
 
-        if (DB::connection('mysql_dfs')->table($cgnatTable)->exists()) {
+        //truncate if table exist
+        if (Schema::connection('mysql_dfs')->hasTable($cgnatTable)) {
             DB::connection('mysql_dfs')->table($cgnatTable)->truncate();
         }
         DB::connection('mysql_dfs')->table($userdata)->truncate();
