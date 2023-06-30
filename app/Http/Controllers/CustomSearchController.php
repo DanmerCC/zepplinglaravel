@@ -221,8 +221,10 @@ class CustomSearchController extends Controller
         if (Schema::connection('mysql_dfs')->hasTable($cgnatTable)) {
             DB::connection('mysql_dfs')->table($cgnatTable)->truncate();
         }
-        DB::connection('mysql_dfs')->table($userdata)->truncate();
+        if (Schema::connection('mysql_dfs')->hasTable($userdata)) {
 
+            DB::connection('mysql_dfs')->table($userdata)->truncate();
+        }
 
         $newModel = new CustomSearch($request->only(['day', 'hour', 'ip_publica']));
         $newModel->state = 'STARTED';
