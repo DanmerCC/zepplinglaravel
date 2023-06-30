@@ -217,7 +217,9 @@ class CustomSearchController extends Controller
         $cgnatTable = "df_cgnat_SourceNatIP_Dest_file";
         $userdata = "df_joined";
 
-        DB::connection('mysql_dfs')->table($cgnatTable)->truncate();
+        if (DB::connection('mysql_dfs')->table($cgnatTable)->exists()) {
+            DB::connection('mysql_dfs')->table($cgnatTable)->truncate();
+        }
         DB::connection('mysql_dfs')->table($userdata)->truncate();
 
 
@@ -229,9 +231,9 @@ class CustomSearchController extends Controller
         $date = Carbon::now()->format('Y-m-d');
 
         $command = "python3 " . env('SCRIPT_PATH');
-        if($last){
+        if ($last) {
             $command .= " " . ($newModel->day->format('Y-m-d') != $last->day->format('Y-m-d') ? "1" : "0") . " " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
-        }else{
+        } else {
             $command .= " 1 " . str_replace("-", "_", $newModel->day->format('Y-m-d')) . " " . $newModel->hour . " " . $newModel->ip_publica;
         }
         $command .= " " . route("handler.endscript", ["id" => $newModel->id]) . " > /bigdata/scripts/buscador" . Carbon::now()->format('Y_m_d_H_i_s') . ".log 2>&1 &";
