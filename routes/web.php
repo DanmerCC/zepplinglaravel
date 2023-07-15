@@ -22,7 +22,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('wombase');
+
+    return Auth::check() ? redirect('/zepplingtst') : view('auth.login');
+    //return view('wombase');
 })->middleware('auth')->name('base');
 
 
